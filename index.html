@@ -66,64 +66,9 @@
             color: #003366;
         }
 
-        .hero {
-            background-color: #003366;
-            color: white;
-            padding: 80px 0;
-            text-align: center;
-        }
-
-        .hero h1 {
-            color: white;
-            font-size: 2.5rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 20px auto;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #ffa500;
-            color: #003366;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        .btn:hover {
-            background-color: #e69500;
-        }
-
         section {
             padding: 60px 0;
             border-bottom: 1px solid #eee;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        ul {
-            list-style-position: inside;
-            margin-bottom: 15px;
-        }
-
-        li {
-            margin-bottom: 8px;
         }
 
         /* --- PRICING --- */
@@ -131,39 +76,53 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+            margin-top: 40px;
         }
 
         .price-card {
-            background: white;
+            background: #ffffff;
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 25px;
             text-align: center;
-            transition: transform 0.3s;
+            transition: transform 0.25s, box-shadow 0.25s;
         }
 
         .price-card:hover {
-            transform: translateY(-5px);
-            border-color: #003366;
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .price {
             font-size: 1.5rem;
-            color: #003366;
             font-weight: bold;
             margin: 15px 0;
+            color: #003366;
         }
 
-        /* --- CFO ESTRATÉGICO EM DESTAQUE --- */
-        .price-card.full-width {
-            grid-column: 1 / -1;
+        /* --- Destaque leve CFO Estratégico --- */
+        .price-card.cfo-estrategico {
+            background-color: #f4f8fc; /* azul muito claro */
             border: 2px solid #003366;
-            background-color: #ffffff;
-            box-shadow: 0 6px 20px rgba(0, 51, 102, 0.15);
         }
 
-        .price-card.full-width .price {
-            font-size: 1.8rem;
+        .price-card.cfo-estrategico h3 {
+            color: #003366;
+        }
+
+        .price-card.cfo-estrategico .price {
+            color: #003366;
+            font-size: 1.6rem;
+        }
+
+        ul {
+            list-style-position: inside;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        li {
+            margin-bottom: 8px;
         }
 
         footer {
@@ -174,9 +133,6 @@
         }
 
         @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
             .menu {
                 display: none;
             }
@@ -185,50 +141,28 @@
 </head>
 <body>
 
-<header>
-    <div class="container">
-        <nav>
-            <div class="logo">RUMO Contabilidade</div>
-            <div class="menu">
-                <a href="#proposta">Proposta</a>
-                <a href="#atuacao">Como Atuamos</a>
-                <a href="#pacotes">Pacotes</a>
-                <a href="#contato">Contato</a>
-            </div>
-        </nav>
-    </div>
-</header>
-
-<section class="hero">
-    <div class="container">
-        <h1>Contabilidade que ajuda você a decidir</h1>
-        <p>Apoiamos empresas do Simples Nacional a entender seus números, organizar a gestão financeira e tomar decisões com clareza.</p>
-        <a href="#contato" class="btn">Quero organizar minha empresa</a>
-    </div>
-</section>
-
 <section id="pacotes" style="background-color: #f4f4f4;">
     <div class="container">
-        <h2 style="text-align: center;">Nossos Pacotes</h2>
+        <h2 style="text-align:center;">Nossos Pacotes</h2>
 
-        <div class="pricing-grid" style="margin-top: 40px;">
+        <div class="pricing-grid">
 
             <div class="price-card">
                 <h3>Contabilidade Essencial</h3>
                 <div class="price">R$ 1.000</div>
                 <p>Para quem quer estar regular e organizado.</p>
-                <ul style="text-align: left; font-size: 0.9rem;">
+                <ul>
                     <li>Contábil, fiscal e obrigações</li>
                     <li>Sem análise gerencial</li>
                     <li>Sem reuniões</li>
                 </ul>
             </div>
 
-            <div class="price-card" style="border: 2px solid #003366;">
-                <h3 style="color: #ffa500;">Contabilidade + Painel do Dono</h3>
+            <div class="price-card">
+                <h3>Contabilidade + Painel do Dono</h3>
                 <div class="price">R$ 1.600</div>
-                <p>Para quem quer clareza financeira.</p>
-                <ul style="text-align: left; font-size: 0.9rem;">
+                <p>Para quem busca clareza financeira.</p>
+                <ul>
                     <li>DRE e Fluxo de Caixa</li>
                     <li>KPIs e Dashboard</li>
                     <li>Relatório gerencial</li>
@@ -239,22 +173,22 @@
                 <h3>Contador-CFO</h3>
                 <div class="price">R$ 2.000</div>
                 <p>Apoio próximo na decisão.</p>
-                <ul style="text-align: left; font-size: 0.9rem;">
+                <ul>
                     <li>Benchmark setorial</li>
                     <li>Projeções e cenários</li>
                     <li>Reunião mensal</li>
                 </ul>
             </div>
 
-            <div class="price-card full-width">
+            <div class="price-card cfo-estrategico">
                 <h3>CFO Estratégico</h3>
                 <div class="price">R$ 4.000</div>
                 <p><strong>Parceria estratégica de longo prazo.</strong></p>
-                <ul style="text-align: left; font-size: 0.9rem;">
+                <ul>
                     <li>Análise de alavancas do negócio</li>
                     <li>Revisões estratégicas recorrentes</li>
                     <li>Encontro anual de boas práticas</li>
-                    <li><strong>Vagas limitadas · Contrato anual</strong></li>
+                    <li><strong>Vagas limitadas</strong></li>
                 </ul>
             </div>
 
@@ -262,18 +196,8 @@
     </div>
 </section>
 
-<section id="contato" style="background-color: #003366; color: white;">
-    <div class="container" style="text-align: center;">
-        <h2 style="color: white;">Como Começar</h2>
-        <p>O primeiro passo é entender se existe fit real entre sua empresa e nosso modelo.</p>
-        <a href="mailto:contato@rumocontabilidade.com.br" class="btn">Agendar uma conversa</a>
-    </div>
-</section>
-
 <footer>
-    <div class="container">
-        <p>&copy; 2025 RUMO Contabilidade e Gestão. Todos os direitos reservados.</p>
-    </div>
+    <p>&copy; 2025 RUMO Contabilidade e Gestão</p>
 </footer>
 
 </body>
