@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RUMO Contabilidade e Gestão</title>
     <style>
-        /* --- CSS: A ESTÉTICA DO SITE --- */
-        
-        /* Reset básico para garantir que o site fique igual em todos os navegadores */
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +12,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Configurações Gerais */
         body {
             line-height: 1.6;
             color: #333;
@@ -23,7 +19,7 @@
         }
 
         h1, h2, h3 {
-            color: #003366; /* Azul Marinho Profissional */
+            color: #003366;
             margin-bottom: 15px;
         }
 
@@ -34,15 +30,14 @@
         .container {
             width: 90%;
             max-width: 1100px;
-            margin: 0 auto; /* Centraliza o conteúdo */
+            margin: 0 auto;
             padding: 20px;
         }
 
-        /* Cabeçalho (Menu) */
         header {
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky; /* Menu fixa no topo */
+            position: sticky;
             top: 0;
             z-index: 1000;
         }
@@ -71,7 +66,6 @@
             color: #003366;
         }
 
-        /* Seção Hero (Topo) */
         .hero {
             background-color: #003366;
             color: white;
@@ -92,7 +86,7 @@
 
         .btn {
             display: inline-block;
-            background-color: #ffa500; /* Laranja para destaque */
+            background-color: #ffa500;
             color: #003366;
             padding: 12px 30px;
             text-decoration: none;
@@ -105,13 +99,11 @@
             background-color: #e69500;
         }
 
-        /* Seções Gerais */
         section {
             padding: 60px 0;
             border-bottom: 1px solid #eee;
         }
 
-        /* Layout em Colunas (Grid) */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -125,17 +117,16 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        /* Estilo da lista */
         ul {
             list-style-position: inside;
             margin-bottom: 15px;
         }
-        
+
         li {
             margin-bottom: 8px;
         }
 
-        /* Tabelas de Preço */
+        /* --- PRICING --- */
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -163,7 +154,18 @@
             margin: 15px 0;
         }
 
-        /* Rodapé */
+        /* --- CFO ESTRATÉGICO EM DESTAQUE --- */
+        .price-card.full-width {
+            grid-column: 1 / -1;
+            border: 2px solid #003366;
+            background-color: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 51, 102, 0.15);
+        }
+
+        .price-card.full-width .price {
+            font-size: 1.8rem;
+        }
+
         footer {
             background-color: #333;
             color: white;
@@ -171,229 +173,108 @@
             padding: 30px 0;
         }
 
-        /* Responsividade (Celular) */
         @media (max-width: 768px) {
             .grid-2 {
                 grid-template-columns: 1fr;
             }
             .menu {
-                display: none; /* Simplificação para mobile */
+                display: none;
             }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">RUMO Contabilidade</div>
-                <div class="menu">
-                    <a href="#proposta">Proposta</a>
-                    <a href="#atuacao">Como Atuamos</a>
-                    <a href="#pacotes">Pacotes</a>
-                    <a href="#contato">Contato</a>
-                </div>
-            </nav>
-        </div>
-    </header>
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">RUMO Contabilidade</div>
+            <div class="menu">
+                <a href="#proposta">Proposta</a>
+                <a href="#atuacao">Como Atuamos</a>
+                <a href="#pacotes">Pacotes</a>
+                <a href="#contato">Contato</a>
+            </div>
+        </nav>
+    </div>
+</header>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Contabilidade que ajuda você a decidir</h1>
-            <p>Apoiamos empresas do Simples Nacional a entender seus números, organizar a gestão financeira e tomar decisões com clareza.</p>
-            <a href="#contato" class="btn">Quero organizar minha empresa</a>
-        </div>
-    </section>
+<section class="hero">
+    <div class="container">
+        <h1>Contabilidade que ajuda você a decidir</h1>
+        <p>Apoiamos empresas do Simples Nacional a entender seus números, organizar a gestão financeira e tomar decisões com clareza.</p>
+        <a href="#contato" class="btn">Quero organizar minha empresa</a>
+    </div>
+</section>
 
-    <section id="proposta">
-        <div class="container">
-            <h2>Nossa Proposta</h2>
-            <p><strong>Mais do que contabilidade. Clareza para o dono do negócio.</strong></p>
-            <p>Pequenas e médias empresas vivem um paradoxo: são grandes demais para operar no improviso, mas pequenas demais para ter um gerente financeiro ou CFO. Nosso trabalho nasce exatamente nesse espaço.</p>
-            <p>Atuamos como um contador com visão de gestão, ajudando a responder:</p>
-            <ul>
-                <li>Estou realmente tendo lucro?</li>
-                <li>Meu problema é faturamento ou margem?</li>
-                <li>Posso crescer sem quebrar meu caixa?</li>
-                <li>Minha dívida está saudável?</li>
-            </ul>
-        </div>
-    </section>
+<section id="pacotes" style="background-color: #f4f4f4;">
+    <div class="container">
+        <h2 style="text-align: center;">Nossos Pacotes</h2>
 
-    <section style="background-color: #fff;">
-        <div class="container grid-2">
-            <div class="card">
-                <h3>O que somos</h3>
-                <ul>
-                    <li>Escritório contábil consultivo</li>
-                    <li>Parceiro técnico do dono</li>
-                    <li>Tradutor de números em decisões</li>
-                    <li>Focados em rotinas e entregáveis</li>
-                    <li>Estrutura remota e recorrente</li>
+        <div class="pricing-grid" style="margin-top: 40px;">
+
+            <div class="price-card">
+                <h3>Contabilidade Essencial</h3>
+                <div class="price">R$ 1.000</div>
+                <p>Para quem quer estar regular e organizado.</p>
+                <ul style="text-align: left; font-size: 0.9rem;">
+                    <li>Contábil, fiscal e obrigações</li>
+                    <li>Sem análise gerencial</li>
+                    <li>Sem reuniões</li>
                 </ul>
             </div>
-            <div class="card" style="background-color: #fcebeb;">
-                <h3>O que não somos</h3>
-                <ul>
-                    <li>Contabilidade de volume ou baixo custo</li>
-                    <li>Focados apenas em obrigações fiscais</li>
-                    <li>BPO financeiro operacional</li>
-                    <li>Departamento pessoal terceirizado</li>
-                    <li>Consultoria sem escopo definido</li>
+
+            <div class="price-card" style="border: 2px solid #003366;">
+                <h3 style="color: #ffa500;">Contabilidade + Painel do Dono</h3>
+                <div class="price">R$ 1.600</div>
+                <p>Para quem quer clareza financeira.</p>
+                <ul style="text-align: left; font-size: 0.9rem;">
+                    <li>DRE e Fluxo de Caixa</li>
+                    <li>KPIs e Dashboard</li>
+                    <li>Relatório gerencial</li>
                 </ul>
             </div>
-        </div>
-    </section>
 
-    <section>
-        <div class="container">
-            <h2>Para quem é</h2>
-            <p>Atendemos empresas do <strong>Simples Nacional</strong> que faturam entre R$ 50 mil e R$ 400 mil/mês e buscam crescimento seguro.</p>
-            <div class="grid-2">
-                <div>
-                    <h3>Ideal para quem:</h3>
-                    <ul>
-                        <li>Quer entender melhor seus números</li>
-                        <li>Aceita padronização mínima</li>
-                        <li>Valoriza organização e previsibilidade</li>
-                        <li>Vê contabilidade como investimento</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Não é para quem:</h3>
-                    <ul>
-                        <li>Só compara preço</li>
-                        <li>Quer apenas “emitir guias”</li>
-                        <li>Não entrega informações no prazo</li>
-                        <li>Espera que alguém administre por ele</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="atuacao" style="background-color: #fff;">
-        <div class="container">
-            <h2>Como Atuamos</h2>
-            <p>Nossa atuação se organiza em três camadas complementares:</p>
-            
-            <div style="margin-top: 30px;">
-                <h3>1. Base contábil e fiscal</h3>
-                <p>Garantimos que a empresa esteja regular. Inclui escrituração, fechamento e obrigações legais.</p>
-            </div>
-            
-            <div style="margin-top: 30px;">
-                <h3>2. Gestão financeira recorrente (Núcleo)</h3>
-                <p>Aqui começa a geração de valor. DRE gerencial, Fluxo de caixa, KPIs e Dashboard contínuo ("Painel do Dono").</p>
+            <div class="price-card">
+                <h3>Contador-CFO</h3>
+                <div class="price">R$ 2.000</div>
+                <p>Apoio próximo na decisão.</p>
+                <ul style="text-align: left; font-size: 0.9rem;">
+                    <li>Benchmark setorial</li>
+                    <li>Projeções e cenários</li>
+                    <li>Reunião mensal</li>
+                </ul>
             </div>
 
-            <div style="margin-top: 30px;">
-                <h3>3. Estratégia e decisão (Premium)</h3>
-                <p>Proximidade maior. Projeções, cenários, análise de alavancas e reuniões estratégicas.</p>
+            <div class="price-card full-width">
+                <h3>CFO Estratégico</h3>
+                <div class="price">R$ 4.000</div>
+                <p><strong>Parceria estratégica de longo prazo.</strong></p>
+                <ul style="text-align: left; font-size: 0.9rem;">
+                    <li>Análise de alavancas do negócio</li>
+                    <li>Revisões estratégicas recorrentes</li>
+                    <li>Encontro anual de boas práticas</li>
+                    <li><strong>Vagas limitadas · Contrato anual</strong></li>
+                </ul>
             </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
-    <section>
-        <div class="container">
-            <h2>Nossos Diferenciais</h2>
-            <div class="grid-2">
-                <div>
-                    <h3>Linguagem de negócio</h3>
-                    <p>Falamos de caixa, margem e risco, não de "contabiles".</p>
-                </div>
-                <div>
-                    <h3>Visão de gerente financeiro</h3>
-                    <p>Olhamos o negócio de dentro, focados na saúde da empresa.</p>
-                </div>
-                <div>
-                    <h3>Produto claro</h3>
-                    <p>Pacotes definidos e escopo fechado. Sem improviso.</p>
-                </div>
-                <div>
-                    <h3>Educação</h3>
-                    <p>Promovemos encontros para ajudar você a amadurecer as decisões.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="contato" style="background-color: #003366; color: white;">
+    <div class="container" style="text-align: center;">
+        <h2 style="color: white;">Como Começar</h2>
+        <p>O primeiro passo é entender se existe fit real entre sua empresa e nosso modelo.</p>
+        <a href="mailto:contato@rumocontabilidade.com.br" class="btn">Agendar uma conversa</a>
+    </div>
+</section>
 
-    <section id="pacotes" style="background-color: #f4f4f4;">
-        <div class="container">
-            <h2 style="text-align: center;">Nossos Pacotes</h2>
-            <div class="pricing-grid" style="margin-top: 40px;">
-                
-                <div class="price-card">
-                    <h3>Contabilidade Essencial</h3>
-                    <div class="price">R$ 1.000</div>
-                    <p>Para quem quer estar regular e organizado.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Contábil, fiscal e obrigações</li>
-                        <li>Sem análise gerencial</li>
-                        <li>Sem reuniões</li>
-                    </ul>
-                </div>
-
-                <div class="price-card" style="border: 2px solid #003366; transform: scale(1.05);">
-                    <h3 style="color: #ffa500;">Contabilidade + Painel do Dono</h3>
-                    <div class="price">R$ 1.600</div>
-                    <p>Para quem quer clareza financeira.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Tudo do Essencial</li>
-                        <li>DRE gerencial e Fluxo de Caixa</li>
-                        <li>Dashboard contínuo</li>
-                        <li>Reunião mensal (inicial)</li>
-                    </ul>
-                </div>
-
-                <div class="price-card">
-                    <h3>Contador-CFO</h3>
-                    <div class="price">R$ 2.000</div>
-                    <p>Apoio próximo na decisão.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Tudo do anterior</li>
-                        <li>Benchmark setorial</li>
-                        <li>Projeções e cenários</li>
-                        <li>Reunião mensal estruturada</li>
-                    </ul>
-                </div>
-
-                <div class="price-card">
-                    <h3>CFO Estratégico</h3>
-                    <div class="price">R$ 4.000</div>
-                    <p>Parceria de longo prazo.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Análise de alavancas</li>
-                        <li>Revisões estratégicas</li>
-                        <li>Encontro anual</li>
-                        <li>Vagas limitadas</li>
-                    </ul>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="contato" style="background-color: #003366; color: white;">
-        <div class="container" style="text-align: center;">
-            <h2 style="color: white;">Como Começar</h2>
-            <p>O primeiro passo é simples: entender se há fit real entre sua empresa e nosso modelo.</p>
-            <p>Se fizer sentido, seguimos com uma proposta clara.</p>
-            <br>
-            <a href="mailto:contato@rumocontabilidade.com.br" class="btn">Agendar uma conversa</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 RUMO Contabilidade e Gestão. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+<footer>
+    <div class="container">
+        <p>&copy; 2025 RUMO Contabilidade e Gestão. Todos os direitos reservados.</p>
+    </div>
+</footer>
 
 </body>
 </html>
