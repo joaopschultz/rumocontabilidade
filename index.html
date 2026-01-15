@@ -1,399 +1,935 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RUMO Contabilidade e Gestão</title>
-    <style>
-        /* --- CSS: A ESTÉTICA DO SITE --- */
-        
-        /* Reset básico para garantir que o site fique igual em todos os navegadores */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RUMO | Contabilidade Boutique para Profissionais de Saúde</title>
+  <style>
+    /* =========================
+       RUMO | Boutique Saúde
+       ========================= */
 
-        /* Configurações Gerais */
-        body {
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        h1, h2, h3 {
-            color: #003366; /* Azul Marinho Profissional */
-            margin-bottom: 15px;
-        }
+    :root{
+      --navy:#003366;
+      --navy-2:#0b2e52;
+      --gold:#ffa500;
+      --bg:#f9f9f9;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --line:#e9ecef;
+      --soft:#f4f6f8;
+      --ok:#0f766e;
+      --warn:#b45309;
+    }
 
-        p {
-            margin-bottom: 15px;
-        }
+    body{
+      line-height: 1.6;
+      color:#333;
+      background: var(--bg);
+    }
 
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            margin: 0 auto; /* Centraliza o conteúdo */
-            padding: 20px;
-        }
+    a { color: inherit; }
 
-        /* Cabeçalho (Menu) */
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky; /* Menu fixa no topo */
-            top: 0;
-            z-index: 1000;
-        }
+    .container{
+      width: 92%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 22px 0;
+    }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-        }
+    h1,h2,h3{
+      color: var(--navy);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #003366;
-        }
+    p{ margin-bottom: 14px; color:#111827; }
 
-        .menu a {
-            text-decoration: none;
-            color: #555;
-            margin-left: 20px;
-            font-weight: 500;
-        }
+    .muted{ color: var(--muted); }
 
-        .menu a:hover {
-            color: #003366;
-        }
+    /* Header */
+    header{
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      position: sticky;
+      top:0;
+      z-index: 1000;
+    }
 
-        /* Seção Hero (Topo) */
-        .hero {
-            background-color: #003366;
-            color: white;
-            padding: 80px 0;
-            text-align: center;
-        }
+    nav{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      padding: 14px 0;
+      gap: 18px;
+    }
 
-        .hero h1 {
-            color: white;
-            font-size: 2.5rem;
-        }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: .2px;
+    }
 
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 20px auto;
-        }
+    .brand .mark{
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-2));
+      position: relative;
+    }
+    .brand .mark:after{
+      content:"";
+      position:absolute;
+      inset: 8px 9px 9px 8px;
+      border-radius: 8px;
+      border: 2px solid rgba(255,255,255,.35);
+    }
 
-        .btn {
-            display: inline-block;
-            background-color: #ffa500; /* Laranja para destaque */
-            color: #003366;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
+    .menu{
+      display:flex;
+      align-items:center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
 
-        .btn:hover {
-            background-color: #e69500;
-        }
+    .menu a{
+      text-decoration:none;
+      color:#495057;
+      font-weight:600;
+      font-size:.95rem;
+    }
+    .menu a:hover{ color: var(--navy); }
 
-        /* Seções Gerais */
-        section {
-            padding: 60px 0;
-            border-bottom: 1px solid #eee;
-        }
+    .cta-top{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+    }
 
-        /* Layout em Colunas (Grid) */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
+    .btn{
+      display:inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      padding: 11px 18px;
+      text-decoration:none;
+      border-radius: 10px;
+      font-weight: 800;
+      border: 1px solid rgba(0,0,0,.06);
+      transition: transform .12s, filter .12s;
+      white-space: nowrap;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(.97); }
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
+    .btn.secondary{
+      background: #fff;
+      color: var(--navy);
+      border: 1px solid var(--line);
+      font-weight: 800;
+    }
 
-        /* Estilo da lista */
-        ul {
-            list-style-position: inside;
-            margin-bottom: 15px;
-        }
-        
-        li {
-            margin-bottom: 8px;
-        }
+    /* Dropdown */
+    .dropdown{
+      position: relative;
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      cursor: default;
+      user-select: none;
+    }
+    .dropdown > span{
+      font-weight: 700;
+      color:#495057;
+      font-size:.95rem;
+    }
+    .dropdown:hover > span{ color: var(--navy); }
 
-        /* Tabelas de Preço */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+    .dropdown .panel{
+      display:none;
+      position:absolute;
+      top: 32px;
+      right: 0;
+      background:#fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.12);
+      min-width: 240px;
+      overflow:hidden;
+    }
+    .dropdown:hover .panel{ display:block; }
 
-        .price-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 25px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
+    .dropdown .panel a{
+      display:block;
+      padding: 12px 14px;
+      text-decoration:none;
+      color:#111827;
+      font-weight: 650;
+      border-bottom: 1px solid #f1f3f5;
+    }
+    .dropdown .panel a:hover{ background: #fafafa; }
+    .dropdown .panel a:last-child{ border-bottom: 0; }
 
-        .price-card:hover {
-            transform: translateY(-5px);
-            border-color: #003366;
-        }
+    /* Hero */
+    .hero{
+      background: linear-gradient(135deg, var(--navy), #0b3a6b);
+      color:#fff;
+      padding: 70px 0 56px;
+    }
+    .hero h1{ color:#fff; font-size: 2.35rem; }
+    .hero p{ color: rgba(255,255,255,.92); font-size:1.08rem; max-width: 780px; }
+    .hero .hero-grid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 28px;
+      align-items: start;
+      margin-top: 18px;
+    }
 
-        .price {
-            font-size: 1.5rem;
-            color: #003366;
-            font-weight: bold;
-            margin: 15px 0;
-        }
+    .hero-badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      padding: 10px 12px;
+      border-radius: 12px;
+      margin-bottom: 14px;
+      font-weight: 750;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,.18);
+    }
 
-        /* Rodapé */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 30px 0;
-        }
+    .hero-card{
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .hero-card h3{ color:#fff; font-size: 1.05rem; margin-bottom: 8px; }
+    .hero-card ul{ list-style:none; margin-top: 8px; }
+    .hero-card li{
+      color: rgba(255,255,255,.92);
+      margin: 10px 0;
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+    }
+    .check{
+      width: 18px; height: 18px;
+      border-radius: 6px;
+      background: rgba(34,197,94,.16);
+      border: 1px solid rgba(34,197,94,.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 18px;
+      margin-top: 2px;
+    }
+    .check:before{
+      content:"✓";
+      color:#22c55e;
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1;
+    }
 
-        /* Responsividade (Celular) */
-        @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-            .menu {
-                display: none; /* Simplificação para mobile */
-            }
-        }
-    </style>
+    .hero-actions{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    /* Sections */
+    section{
+      padding: 56px 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+    }
+    section.white{ background: #fff; }
+    section.soft{ background: var(--soft); }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+
+    .card h3{ margin-bottom: 10px; font-size: 1.05rem; }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: .85rem;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .pill.gold{
+      border-color: rgba(255,165,0,.35);
+      background: rgba(255,165,0,.12);
+      color: #7a4a00;
+    }
+
+    ul{
+      list-style-position: inside;
+      margin-top: 10px;
+    }
+    li{ margin: 8px 0; color:#111827; }
+
+    .note{
+      background: rgba(15,118,110,.08);
+      border: 1px solid rgba(15,118,110,.20);
+      border-radius: 12px;
+      padding: 14px 14px;
+      color:#0f766e;
+      font-weight: 650;
+      margin-top: 12px;
+    }
+
+    .warning{
+      background: rgba(180,83,9,.10);
+      border: 1px solid rgba(180,83,9,.25);
+      border-radius: 12px;
+      padding: 14px 14px;
+      color: var(--warn);
+      font-weight: 650;
+      margin-top: 12px;
+    }
+
+    /* Process */
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 16px;
+    }
+    .step{
+      background:#fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .step .n{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: rgba(0,51,102,.10);
+      border: 1px solid rgba(0,51,102,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color: var(--navy);
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    /* Pricing */
+    .pricing-head{
+      text-align:center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .toggle{
+      display:flex;
+      justify-content:center;
+      margin-top: 18px;
+    }
+    .toggle-wrap{
+      background:#fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px;
+      display:inline-flex;
+      gap: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+    .toggle button{
+      border: 0;
+      background: transparent;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      color: #374151;
+      cursor:pointer;
+      transition: background .12s, color .12s;
+    }
+    .toggle button.active{
+      background: rgba(0,51,102,.12);
+      color: var(--navy);
+    }
+
+    .pricing-grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 26px;
+      align-items: stretch;
+    }
+
+    .price-card{
+      background:#fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.05);
+      position: relative;
+      overflow:hidden;
+    }
+
+    .price-card.featured{
+      border: 2px solid rgba(255,165,0,.60);
+      box-shadow: 0 12px 30px rgba(0,0,0,.10);
+      transform: translateY(-2px);
+    }
+
+    .ribbon{
+      position:absolute;
+      top: 14px;
+      right: -46px;
+      background: rgba(255,165,0,.95);
+      color: var(--navy);
+      font-weight: 900;
+      padding: 8px 60px;
+      transform: rotate(35deg);
+      font-size: .82rem;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+
+    .price-top{
+      display:flex;
+      justify-content: space-between;
+      align-items:flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .plan-title{
+      font-size: 1.2rem;
+      font-weight: 950;
+      color: var(--navy);
+    }
+
+    .plan-sub{
+      color: var(--muted);
+      font-weight: 650;
+      margin-top: 4px;
+    }
+
+    .price{
+      font-size: 2rem;
+      font-weight: 950;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+      margin-top: 10px;
+    }
+    .per{
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .95rem;
+      margin-top: -2px;
+    }
+
+    .divider{
+      height: 1px;
+      background: #f1f3f5;
+      margin: 16px 0;
+    }
+
+    .features{
+      list-style:none;
+      margin-top: 10px;
+    }
+    .features li{
+      display:flex;
+      gap: 10px;
+      align-items:flex-start;
+      margin: 10px 0;
+      color:#111827;
+    }
+    .features li .mini{
+      width: 18px; height: 18px;
+      border-radius: 6px;
+      background: rgba(0,51,102,.09);
+      border: 1px solid rgba(0,51,102,.15);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex: 0 0 18px;
+      margin-top: 2px;
+      color: var(--navy);
+      font-weight: 900;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .plan-cta{
+      margin-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .fineprint{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    /* FAQ */
+    details{
+      background:#fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 16px;
+      margin-top: 12px;
+    }
+    summary{
+      cursor:pointer;
+      font-weight: 900;
+      color: var(--navy);
+    }
+    details p{
+      margin-top: 10px;
+      color:#111827;
+    }
+
+    /* Contact */
+    .contact{
+      background: linear-gradient(135deg, var(--navy), #0b3a6b);
+      color:#fff;
+      border-bottom: 0;
+    }
+    .contact h2{ color:#fff; }
+    .contact p{ color: rgba(255,255,255,.92); }
+    .contact .contact-card{
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 18px;
+    }
+    .contact .small{
+      color: rgba(255,255,255,.80);
+      font-size: .92rem;
+    }
+
+    footer{
+      background:#111827;
+      color:#fff;
+      text-align:center;
+      padding: 28px 0;
+    }
+    footer p{ color: rgba(255,255,255,.80); margin:0; }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero .hero-grid{ grid-template-columns: 1fr; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .steps{ grid-template-columns: 1fr; }
+      .pricing-grid{ grid-template-columns: 1fr; }
+      .menu{ display:none; }
+    }
+  </style>
 </head>
+
 <body>
-
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">RUMO Contabilidade</div>
-                <div class="menu">
-                    <a href="#proposta">Proposta</a>
-                    <a href="#atuacao">Como Atuamos</a>
-                    <a href="#pacotes">Pacotes</a>
-                    <a href="#contato">Contato</a>
-                </div>
-            </nav>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div>
+            <div style="font-size:1.05rem;">RUMO Contabilidade</div>
+            <div class="muted" style="font-size:.85rem; font-weight:700;">Boutique • Profissionais de Saúde</div>
+          </div>
         </div>
-    </header>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Contabilidade que ajuda você a decidir</h1>
-            <p>Apoiamos empresas do Simples Nacional a entender seus números, organizar a gestão financeira e tomar decisões com clareza.</p>
-            <a href="#contato" class="btn">Quero organizar minha empresa</a>
-        </div>
-    </section>
+        <div class="menu">
+          <a href="#proposta">Proposta</a>
+          <a href="#como-funciona">Como funciona</a>
+          <a href="#planos">Planos</a>
+          <a href="#faq">Perguntas</a>
 
-    <section id="proposta">
-        <div class="container">
-            <h2>Nossa Proposta</h2>
-            <p><strong>Mais do que contabilidade. Clareza para o dono do negócio.</strong></p>
-            <p>Pequenas e médias empresas vivem um paradoxo: são grandes demais para operar no improviso, mas pequenas demais para ter um gerente financeiro ou CFO. Nosso trabalho nasce exatamente nesse espaço.</p>
-            <p>Atuamos como um contador com visão de gestão, ajudando a responder:</p>
-            <ul>
-                <li>Estou realmente tendo lucro?</li>
-                <li>Meu problema é faturamento ou margem?</li>
-                <li>Posso crescer sem quebrar meu caixa?</li>
-                <li>Minha dívida está saudável?</li>
-            </ul>
-        </div>
-    </section>
-
-    <section style="background-color: #fff;">
-        <div class="container grid-2">
-            <div class="card">
-                <h3>O que somos</h3>
-                <ul>
-                    <li>Escritório contábil consultivo</li>
-                    <li>Parceiro técnico do dono</li>
-                    <li>Tradutor de números em decisões</li>
-                    <li>Focados em rotinas e entregáveis</li>
-                    <li>Estrutura remota e recorrente</li>
-                </ul>
+          <!-- Abas fora da landing (links para páginas detalhadas) -->
+          <div class="dropdown" aria-label="Especialidades">
+            <span>Especialidades ▾</span>
+            <div class="panel" role="menu" aria-label="Links de especialidades">
+              <a href="/medicos.html">Médicos (detalhado)</a>
+              <a href="/dentistas.html">Dentistas (detalhado)</a>
+              <a href="/clinicas.html">Clínicas (detalhado)</a>
+              <a href="/psicologos.html">Psicólogos (detalhado)</a>
+              <a href="/fisioterapeutas.html">Fisioterapeutas (detalhado)</a>
             </div>
-            <div class="card" style="background-color: #fcebeb;">
-                <h3>O que não somos</h3>
-                <ul>
-                    <li>Contabilidade de volume ou baixo custo</li>
-                    <li>Focados apenas em obrigações fiscais</li>
-                    <li>BPO financeiro operacional</li>
-                    <li>Departamento pessoal terceirizado</li>
-                    <li>Consultoria sem escopo definido</li>
-                </ul>
-            </div>
+          </div>
         </div>
-    </section>
 
-    <section>
-        <div class="container">
-            <h2>Para quem é</h2>
-            <p>Atendemos empresas do <strong>Simples Nacional</strong> que faturam entre R$ 50 mil e R$ 400 mil/mês e buscam crescimento seguro.</p>
-            <div class="grid-2">
-                <div>
-                    <h3>Ideal para quem:</h3>
-                    <ul>
-                        <li>Quer entender melhor seus números</li>
-                        <li>Aceita padronização mínima</li>
-                        <li>Valoriza organização e previsibilidade</li>
-                        <li>Vê contabilidade como investimento</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>Não é para quem:</h3>
-                    <ul>
-                        <li>Só compara preço</li>
-                        <li>Quer apenas “emitir guias”</li>
-                        <li>Não entrega informações no prazo</li>
-                        <li>Espera que alguém administre por ele</li>
-                    </ul>
-                </div>
-            </div>
+        <div class="cta-top">
+          <!-- Ajuste para seu WhatsApp real -->
+          <a class="btn secondary" href="#planos">Ver planos</a>
+          <a class="btn" href="#contato">Agendar conversa</a>
         </div>
-    </section>
+      </nav>
+    </div>
+  </header>
 
-    <section id="atuacao" style="background-color: #fff;">
-        <div class="container">
-            <h2>Como Atuamos</h2>
-            <p>Nossa atuação se organiza em três camadas complementares:</p>
-            
-            <div style="margin-top: 30px;">
-                <h3>1. Base contábil e fiscal</h3>
-                <p>Garantimos que a empresa esteja regular. Inclui escrituração, fechamento e obrigações legais.</p>
-            </div>
-            
-            <div style="margin-top: 30px;">
-                <h3>2. Gestão financeira recorrente (Núcleo)</h3>
-                <p>Aqui começa a geração de valor. DRE gerencial, Fluxo de caixa, KPIs e Dashboard contínuo ("Painel do Dono").</p>
-            </div>
+  <section class="hero" id="topo">
+    <div class="container">
+      <div class="hero-badge"><span class="dot" aria-hidden="true"></span> Vagas limitadas • Atendimento direto • Rotina blindada</div>
+      <h1>Contabilidade boutique para profissionais de saúde: <br/>segurança, previsibilidade e resposta rápida.</h1>
+      <p>
+        Você cuida de pessoas. Eu cuido do seu CNPJ — para você pagar o imposto certo, evitar pendências e ter paz na rotina.
+        Aqui você não é “mais um”: você fala direto comigo, com escopo claro e atendimento ágil.
+      </p>
 
-            <div style="margin-top: 30px;">
-                <h3>3. Estratégia e decisão (Premium)</h3>
-                <p>Proximidade maior. Projeções, cenários, análise de alavancas e reuniões estratégicas.</p>
-            </div>
+      <div class="hero-actions">
+        <!-- Ajuste para WhatsApp real -->
+        <a class="btn" href="#contato">Quero ser atendido</a>
+        <a class="btn secondary" href="#proposta">Entender a proposta</a>
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h3>O que resolve (na prática)</h3>
+          <ul>
+            <li><span class="check" aria-hidden="true"></span><span><b>Imposto no lugar certo</b> (PF x PJ, Simples, pró-labore e lucros sem susto).</span></li>
+            <li><span class="check" aria-hidden="true"></span><span><b>Rotina sem pendência</b> (guia, obrigações e regularidade fiscal em dia).</span></li>
+            <li><span class="check" aria-hidden="true"></span><span><b>Nota fiscal sem travar recebimento</b> (configuração e rotina simples).</span></li>
+            <li><span class="check" aria-hidden="true"></span><span><b>Um pilar quando você precisa</b> (resposta rápida e orientação objetiva).</span></li>
+          </ul>
         </div>
-    </section>
 
-    <section>
-        <div class="container">
-            <h2>Nossos Diferenciais</h2>
-            <div class="grid-2">
-                <div>
-                    <h3>Linguagem de negócio</h3>
-                    <p>Falamos de caixa, margem e risco, não de "contabiles".</p>
-                </div>
-                <div>
-                    <h3>Visão de gerente financeiro</h3>
-                    <p>Olhamos o negócio de dentro, focados na saúde da empresa.</p>
-                </div>
-                <div>
-                    <h3>Produto claro</h3>
-                    <p>Pacotes definidos e escopo fechado. Sem improviso.</p>
-                </div>
-                <div>
-                    <h3>Educação</h3>
-                    <p>Promovemos encontros para ajudar você a amadurecer as decisões.</p>
-                </div>
+        <div class="hero-card">
+          <h3>Para quem é</h3>
+          <p class="muted" style="color:rgba(255,255,255,.86);">
+            Profissionais de saúde que querem <b>organização, segurança</b> e um contador próximo.
+          </p>
+          <ul>
+            <li><span class="check" aria-hidden="true"></span><span>Atendimento individual (PJ solo)</span></li>
+            <li><span class="check" aria-hidden="true"></span><span>Consultórios com secretária (sob escopo)</span></li>
+            <li><span class="check" aria-hidden="true"></span><span>Clínicas pequenas (página detalhada)</span></li>
+          </ul>
+
+          <div class="warning" style="background:rgba(255,255,255,.12); border-color: rgba(255,255,255,.16); color: rgba(255,255,255,.92);">
+            <b>Importante:</b> não é modelo “de volume”. Eu trabalho com carteira limitada para manter padrão boutique.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proposta" class="white">
+    <div class="container">
+      <h2>Nossa proposta</h2>
+      <p>
+        <b>Digital nos processos, humano no atendimento.</b> A tecnologia aqui serve para simplificar documentos e rotinas.
+        A diferença está na presença: você tem <b>um contador de verdade</b> acompanhando, alertando e orientando antes do problema virar incêndio.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="pill">Pilar 1 • Atendimento direto</div>
+          <h3>Você fala comigo</h3>
+          <p class="muted">Sem call center. Sem “abre chamado”. Você tem um responsável claro e acessível.</p>
+        </div>
+        <div class="card">
+          <div class="pill">Pilar 2 • Resposta rápida</div>
+          <h3>SLA e objetividade</h3>
+          <p class="muted">Resposta em até <b>24h úteis</b> (canais e limites definidos para proteger seu tempo e o meu).</p>
+        </div>
+        <div class="card">
+          <div class="pill gold">Pilar 3 • Blindagem</div>
+          <h3>Regularidade e segurança</h3>
+          <p class="muted">Rotina fiscal em dia, pró-labore e lucros organizados, e risco bobo fora do caminho.</p>
+        </div>
+      </div>
+
+      <div class="note">
+        <b>Ideia central:</b> você não compra “guias”. Você compra <b>previsibilidade</b> e um <b>pilar de segurança</b> para o seu trabalho.
+      </div>
+    </div>
+  </section>
+
+  <section class="soft" id="como-funciona">
+    <div class="container">
+      <h2>Como funciona</h2>
+      <p class="muted">
+        Um processo simples, feito para tirar a burocracia da sua frente — sem perder a sensação de segurança.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <h3>Diagnóstico rápido</h3>
+          <p class="muted">Entendo sua fase (PF, PJ, consultório) e organizo o caminho: regime, rotina de notas e retiradas.</p>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <h3>Implantação e organização</h3>
+          <p class="muted">Configuração e padronização mínima para rodar sem sustos. Aqui a gente “arruma a casa”.</p>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <h3>Manutenção blindada</h3>
+          <p class="muted">A partir daí, rotina mensal previsível: impostos, obrigações e acompanhamento conforme o plano.</p>
+        </div>
+      </div>
+
+      <div class="warning">
+        <b>Transparência boutique:</b> regularização de passivos antigos (malha, débitos e pendências fora da rotina mensal) é tratada como
+        serviço à parte, mediante orçamento — assim você não subsidia o “caos” de outra pessoa.
+      </div>
+    </div>
+  </section>
+
+  <section id="planos" class="white">
+    <div class="container">
+      <div class="pricing-head">
+        <h2>Planos (mensal, semestral ou anual)</h2>
+        <p class="muted">
+          Dois tiers, com escopo claro e atendimento de verdade. Escolha o formato de pagamento e veja os valores.
+        </p>
+      </div>
+
+      <div class="toggle" aria-label="Alternar forma de pagamento">
+        <div class="toggle-wrap">
+          <button id="btn-mensal" class="active" type="button">Mensal</button>
+          <button id="btn-semestral" type="button">Semestral</button>
+          <button id="btn-anual" type="button">Anual</button>
+        </div>
+      </div>
+
+      <div class="pricing-grid" style="margin-top: 22px;">
+        <!-- Plano 1 -->
+        <div class="price-card" aria-label="Plano Essencial Saúde">
+          <div class="price-top">
+            <div>
+              <div class="plan-title">Essencial Saúde</div>
+              <div class="plan-sub">Para PJ solo: rotina redonda e previsível.</div>
             </div>
+          </div>
+
+          <div class="price" data-plan="essencial" data-mensal="300" data-semestral="280" data-anual="260">R$ 300</div>
+          <div class="per">/mês</div>
+
+          <div class="divider"></div>
+
+          <ul class="features">
+            <li><span class="mini">✓</span><span><b>Apuração e guias</b> mensais (rotina fiscal).</span></li>
+            <li><span class="mini">✓</span><span><b>Obrigações acessórias</b> básicas (padrão do regime).</span></li>
+            <li><span class="mini">✓</span><span><b>Pró-labore</b> padrão + orientação de <b>lucro</b> (modelo simples).</span></li>
+            <li><span class="mini">✓</span><span><b>Nota fiscal</b>: orientação + revisão (limites do plano).</span></li>
+            <li><span class="mini">✓</span><span><b>Suporte assíncrono</b> com resposta em até <b>24–48h úteis</b>.</span></li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <p class="fineprint">
+            <b>Limites recomendados:</b> 1 CNPJ • até 10 notas/mês • sem funcionários.<br/>
+            Se você já tem consultório com equipe, veja a aba <b>Clínicas</b>.
+          </p>
+
+          <div class="plan-cta">
+            <!-- Ajuste para WhatsApp real -->
+            <a class="btn" href="#contato">Quero esse plano</a>
+            <a class="btn secondary" href="/medicos.html">Ver detalhes por especialidade</a>
+          </div>
         </div>
-    </section>
 
-    <section id="pacotes" style="background-color: #f4f4f4;">
-        <div class="container">
-            <h2 style="text-align: center;">Nossos Pacotes</h2>
-            <div class="pricing-grid" style="margin-top: 40px;">
-                
-                <div class="price-card">
-                    <h3>Contabilidade Essencial</h3>
-                    <div class="price">R$ 1.000</div>
-                    <p>Para quem quer estar regular e organizado.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Contábil, fiscal e obrigações</li>
-                        <li>Sem análise gerencial</li>
-                        <li>Sem reuniões</li>
-                    </ul>
-                </div>
+        <!-- Plano 2 -->
+        <div class="price-card featured" aria-label="Plano Pilar Saúde">
+          <div class="ribbon">MAIS PROXIMIDADE</div>
 
-                <div class="price-card" style="border: 2px solid #003366; transform: scale(1.05);">
-                    <h3 style="color: #ffa500;">Contabilidade + Painel do Dono</h3>
-                    <div class="price">R$ 1.600</div>
-                    <p>Para quem quer clareza financeira.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Tudo do Essencial</li>
-                        <li>DRE gerencial e Fluxo de Caixa</li>
-                        <li>Dashboard contínuo</li>
-                        <li>Reunião mensal (inicial)</li>
-                    </ul>
-                </div>
-
-                <div class="price-card">
-                    <h3>Contador-CFO</h3>
-                    <div class="price">R$ 2.000</div>
-                    <p>Apoio próximo na decisão.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Tudo do anterior</li>
-                        <li>Benchmark setorial</li>
-                        <li>Projeções e cenários</li>
-                        <li>Reunião mensal estruturada</li>
-                    </ul>
-                </div>
-
-                <div class="price-card">
-                    <h3>CFO Estratégico</h3>
-                    <div class="price">R$ 4.000</div>
-                    <p>Parceria de longo prazo.</p>
-                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-                    <ul style="text-align: left; font-size: 0.9rem;">
-                        <li>Análise de alavancas</li>
-                        <li>Revisões estratégicas</li>
-                        <li>Encontro anual</li>
-                        <li>Vagas limitadas</li>
-                    </ul>
-                </div>
-
+          <div class="price-top">
+            <div>
+              <div class="plan-title">Pilar Saúde</div>
+              <div class="plan-sub">Para quem quer blindagem + acompanhamento.</div>
             </div>
-        </div>
-    </section>
+          </div>
 
-    <section id="contato" style="background-color: #003366; color: white;">
-        <div class="container" style="text-align: center;">
-            <h2 style="color: white;">Como Começar</h2>
-            <p>O primeiro passo é simples: entender se há fit real entre sua empresa e nosso modelo.</p>
-            <p>Se fizer sentido, seguimos com uma proposta clara.</p>
-            <br>
-            <a href="mailto:contato@rumocontabilidade.com.br" class="btn">Agendar uma conversa</a>
-        </div>
-    </section>
+          <div class="price" data-plan="pilar" data-mensal="450" data-semestral="420" data-anual="390">R$ 450</div>
+          <div class="per">/mês</div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 RUMO Contabilidade e Gestão. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+          <div class="divider"></div>
 
+          <ul class="features">
+            <li><span class="mini">✓</span><span><b>Tudo do Essencial</b>, com prioridade.</span></li>
+            <li><span class="mini">✓</span><span><b>Revisão periódica</b> de regime/rotina (para evitar pagar imposto errado).</span></li>
+            <li><span class="mini">✓</span><span><b>Pró-labore e lucros</b> com regra e ajuste (mais segurança).</span></li>
+            <li><span class="mini">✓</span><span><b>Resumo mensal</b> (faturamento, impostos, alerta do próximo mês).</span></li>
+            <li><span class="mini">✓</span><span><b>1 call curta</b>/mês (20 min) para decisões objetivas.</span></li>
+            <li><span class="mini">✓</span><span><b>Resposta</b> em até <b>24h úteis</b> (canal prioritário).</span></li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <p class="fineprint">
+            <b>Ideal</b> para profissionais com renda mais alta, múltiplas fontes de recebimento e necessidade de previsibilidade.<br/>
+            <b>Clínicas/consultórios com funcionários</b>: proposta sob escopo (veja /clinicas.html).
+          </p>
+
+          <div class="plan-cta">
+            <a class="btn" href="#contato">Quero o Pilar</a>
+            <a class="btn secondary" href="/clinicas.html">Tenho clínica/consultório</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top: 18px;">
+        <b>Dica estratégica:</b> o semestral costuma ser o “melhor ponto de equilíbrio” — dá desconto, cria estabilidade e permite organizar tudo com calma.
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="soft">
+    <div class="container">
+      <h2>Perguntas frequentes</h2>
+
+      <details>
+        <summary>Você atende só médicos?</summary>
+        <p>
+          Não. Eu atendo <b>profissionais de saúde</b> (médicos, dentistas, psicólogos, fisioterapeutas, nutricionistas etc.).
+          O que muda é o detalhe da operação — por isso existem páginas específicas por especialidade.
+        </p>
+      </details>
+
+      <details>
+        <summary>“100% digital” não me passa segurança. Como você trabalha?</summary>
+        <p>
+          Aqui o digital é ferramenta, não identidade. Documentos e rotina podem ser digitais para dar agilidade,
+          mas o diferencial é o <b>atendimento direto</b>, com escopo claro, acompanhamento e resposta rápida.
+          Você tem um responsável — não uma plataforma.
+        </p>
+      </details>
+
+      <details>
+        <summary>Eu tenho pendências antigas. Isso entra no plano?</summary>
+        <p>
+          Pendências e regularizações fora da rotina mensal (malha, débitos antigos, reenquadramentos complexos) são tratadas
+          como serviço à parte, mediante orçamento. Assim o plano mensal permanece justo e previsível.
+        </p>
+      </details>
+
+      <details>
+        <summary>Quero abrir PJ. Você faz isso?</summary>
+        <p>
+          Sim. Abertura/implantação faz parte do processo inicial. No modelo boutique, eu priorizo fazer a estrutura certa
+          (regime, rotina de notas e retiradas) para você começar sem sustos.
+        </p>
+      </details>
+
+      <details>
+        <summary>Posso migrar de plano depois?</summary>
+        <p>
+          Sim. O caminho mais comum é começar no Essencial, organizar a rotina, e migrar para o Pilar quando você quiser
+          mais acompanhamento e segurança para decisões.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <section id="contato" class="contact">
+    <div class="container" style="text-align:center;">
+      <h2>Vamos ver se existe fit</h2>
+      <p>
+        Boutique de verdade começa com triagem. Me diga sua fase e seu volume — eu te digo o plano certo (ou se não faz sentido).
+      </p>
+
+      <div class="contact-card">
+        <p style="margin-bottom:10px;"><b>Escolha seu canal:</b></p>
+
+        <!-- Ajuste com seus dados reais -->
+        <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+          <a class="btn" href="mailto:contato@rumocontabilidade.com.br">Enviar e-mail</a>
+          <a class="btn secondary" href="https://wa.me/5500000000000?text=Ol%C3%A1%21%20Sou%20profissional%20de%20sa%C3%BAde%20e%20quero%20entender%20qual%20plano%20da%20RUMO%20faz%20sentido%20para%20mim." target="_blank" rel="noopener">
+            Falar no WhatsApp
+          </a>
+        </div>
+
+        <p class="small" style="margin-top:12px;">
+          <b>Tempo de resposta:</b> até 24h úteis (dias úteis).<br/>
+          <b>BH/Remoto:</b> atendimento remoto com padrão boutique; presença/local sob necessidade.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 RUMO Contabilidade e Gestão. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const btnMensal = document.getElementById("btn-mensal");
+      const btnSemestral = document.getElementById("btn-semestral");
+      const btnAnual = document.getElementById("btn-anual");
+      const prices = document.querySelectorAll(".price[data-plan]");
+
+      function setActive(btn){
+        [btnMensal, btnSemestral, btnAnual].forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      }
+
+      function formatBRL(n){
+        // n vem como string numérica
+        const value = Number(n);
+        return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+      }
+
+      function update(mode){
+        prices.forEach(p => {
+          const v = p.getAttribute("data-" + mode);
+          // Mostra só o número com R$ para ficar consistente com seu layout antigo
+          // Se preferir "R$ 300", deixamos assim:
+          const brl = formatBRL(v).replace(",00","");
+          p.textContent = brl;
+        });
+      }
+
+      btnMensal.addEventListener("click", () => { setActive(btnMensal); update("mensal"); });
+      btnSemestral.addEventListener("click", () => { setActive(btnSemestral); update("semestral"); });
+      btnAnual.addEventListener("click", () => { setActive(btnAnual); update("anual"); });
+
+      // default
+      update("mensal");
+    })();
+  </script>
 </body>
 </html>
