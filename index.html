@@ -42,11 +42,13 @@
     .brand{
       display:flex; align-items:center; gap:10px; font-weight:900; color:var(--navy);
       letter-spacing:.2px;
+      min-width: 220px;
     }
     .brand .mark{
       width:34px; height:34px; border-radius:10px;
       background:linear-gradient(135deg, var(--navy), var(--navy-2));
       position:relative;
+      flex: 0 0 34px;
     }
     .brand .mark:after{
       content:""; position:absolute; inset:8px 9px 9px 8px;
@@ -63,6 +65,7 @@
     .menu a:hover{ color:var(--navy); }
 
     .cta-top{ display:flex; gap:10px; align-items:center; }
+
     .btn{
       display:inline-block;
       background:var(--gold);
@@ -74,6 +77,7 @@
       border:1px solid rgba(0,0,0,.06);
       transition:transform .12s, filter .12s;
       white-space:nowrap;
+      text-align:center;
     }
     .btn:hover{ transform:translateY(-1px); filter:brightness(.97); }
     .btn.secondary{
@@ -99,6 +103,49 @@
     }
     .dropdown .panel a:hover{ background:#fafafa; }
     .dropdown .panel a:last-child{ border-bottom:0; }
+
+    /* Mobile menu button + drawer */
+    .burger{
+      display:none;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:950;
+      color:var(--navy);
+      cursor:pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+      line-height: 1;
+    }
+    .mobile-drawer{
+      display:none;
+      background:#fff;
+      border-top: 1px solid var(--line);
+    }
+    .mobile-drawer .wrap{
+      width:92%;
+      max-width:1120px;
+      margin:0 auto;
+      padding: 10px 0 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .mobile-drawer a{
+      text-decoration:none;
+      color:#111827;
+      font-weight:850;
+      padding: 12px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background:#fff;
+    }
+    .mobile-drawer a:hover{ background:#fafafa; }
+    .mobile-drawer .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
 
     /* Sections */
     section{ padding:56px 0; border-bottom:1px solid var(--line); }
@@ -205,13 +252,7 @@
       padding:18px;
       box-shadow:var(--shadow);
     }
-
-    .journey{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
-
+    .journey{ display:grid; grid-template-columns: 1fr; gap:12px; }
     .journey-step{
       display:grid;
       grid-template-columns: 64px 1fr;
@@ -222,7 +263,6 @@
       border-radius:16px;
       background:#fff;
     }
-
     .journey-step .num{
       width:52px; height:52px;
       border-radius:16px;
@@ -232,28 +272,16 @@
       font-weight:950; color:var(--navy);
       font-size:1.1rem;
     }
-
     .journey-step h3{ margin-bottom:6px; font-size:1.05rem; }
     .journey-step p{ margin:0; color:#111827; }
-    .journey-step p .muted{ color:var(--muted); }
-
     .journey-arrow{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      color:var(--muted);
-      font-weight:900;
-      letter-spacing:.5px;
-      user-select:none;
+      display:flex; justify-content:center; align-items:center;
+      color:var(--muted); font-weight:900; user-select:none;
     }
     .journey-arrow span{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:var(--soft);
-      border:1px solid var(--line);
+      display:inline-flex; align-items:center; gap:10px;
+      padding:6px 10px; border-radius:999px;
+      background:var(--soft); border:1px solid var(--line);
       font-size:.9rem;
     }
     .journey-arrow b{ color:var(--navy); }
@@ -275,10 +303,7 @@
       cursor:pointer;
       transition:background .12s, color .12s;
     }
-    .toggle button.active{
-      background:rgba(0,51,102,.12);
-      color:var(--navy);
-    }
+    .toggle button.active{ background:rgba(0,51,102,.12); color:var(--navy); }
 
     .pricing-grid{
       display:grid;
@@ -297,7 +322,6 @@
       position:relative;
       overflow:hidden;
     }
-
     .price-card.featured{
       border:2px solid rgba(255,165,0,.60);
       box-shadow:0 12px 30px rgba(0,0,0,.10);
@@ -370,18 +394,48 @@
     }
     .contact .small{ color:rgba(255,255,255,.80); font-size:.92rem; }
 
-    footer{
-      background:#111827; color:#fff; text-align:center; padding:28px 0;
-    }
+    footer{ background:#111827; color:#fff; text-align:center; padding:28px 0; }
     footer p{ color:rgba(255,255,255,.80); margin:0; }
 
-    /* Responsive */
+    /* ==========================
+       Responsive Improvements
+       ========================== */
+
+    /* Tablet */
     @media (max-width: 980px){
+      .hero h1{ font-size: 2.05rem; }
       .hero .hero-grid{ grid-template-columns:1fr; }
       .grid-3{ grid-template-columns:1fr; }
       .grid-2{ grid-template-columns:1fr; }
       .pricing-grid{ grid-template-columns:1fr; }
       .menu{ display:none; }
+      .burger{ display:inline-flex; }
+      .cta-top .btn.secondary{ display:none; } /* reduz ruído no header mobile */
+    }
+
+    /* Mobile */
+    @media (max-width: 560px){
+      .container{ width: 92%; }
+      section.hero{ padding: 56px 0 44px; }
+      .hero h1{ font-size: 1.75rem; }
+      .hero p{ font-size: 1.0rem; }
+      .hero-badge{ font-size: .9rem; flex-wrap: wrap; }
+      .btn{ width: 100%; }
+      .hero-actions{ gap: 10px; }
+      .hero-card{ padding: 16px; }
+      .journey-wrap{ padding: 14px; }
+      .journey-step{
+        grid-template-columns: 52px 1fr;
+        padding: 14px 12px;
+      }
+      .journey-step .num{
+        width:44px; height:44px;
+        border-radius:14px;
+      }
+      .price-card{ padding: 18px; }
+      .toggle-wrap{ width: 100%; justify-content: space-between; }
+      .toggle button{ flex:1; }
+      .mobile-drawer .row{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -404,7 +458,6 @@
           <a href="#planos">Planos</a>
           <a href="#faq">Perguntas</a>
 
-          <!-- Abas APENAS para médicos e dentistas -->
           <div class="dropdown" aria-label="Especialidades">
             <span>Especialidades ▾</span>
             <div class="panel" role="menu" aria-label="Links de especialidades">
@@ -417,8 +470,24 @@
         <div class="cta-top">
           <a class="btn secondary" href="#planos">Ver planos</a>
           <a class="btn" href="#contato">Agendar conversa</a>
+          <button class="burger" id="burger" type="button" aria-label="Abrir menu">☰</button>
         </div>
       </nav>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+      <div class="wrap">
+        <a href="#proposta">Proposta</a>
+        <a href="#jornada">Jornada</a>
+        <a href="#planos">Planos</a>
+        <a href="#faq">Perguntas</a>
+        <div class="row">
+          <a href="/medicos.html">Sou médico</a>
+          <a href="/dentistas.html">Sou dentista</a>
+        </div>
+        <a href="#contato">Agendar conversa</a>
+      </div>
     </div>
   </header>
 
@@ -504,7 +573,7 @@
     </div>
   </section>
 
-  <!-- JORNADA / 6 PILARES EM FLUXO -->
+  <!-- JORNADA -->
   <section id="jornada" class="soft">
     <div class="container">
       <h2>A Jornada RUMO (do Pilar 1 ao 6)</h2>
@@ -522,9 +591,7 @@
             </div>
           </div>
 
-          <div class="journey-arrow" aria-hidden="true">
-            <span><b>→</b> organização</span>
-          </div>
+          <div class="journey-arrow" aria-hidden="true"><span><b>→</b> organização</span></div>
 
           <div class="journey-step">
             <div class="num">2</div>
@@ -534,9 +601,7 @@
             </div>
           </div>
 
-          <div class="journey-arrow" aria-hidden="true">
-            <span><b>→</b> fluidez</span>
-          </div>
+          <div class="journey-arrow" aria-hidden="true"><span><b>→</b> fluidez</span></div>
 
           <div class="journey-step">
             <div class="num">3</div>
@@ -546,9 +611,7 @@
             </div>
           </div>
 
-          <div class="journey-arrow" aria-hidden="true">
-            <span><b>→</b> segurança</span>
-          </div>
+          <div class="journey-arrow" aria-hidden="true"><span><b>→</b> segurança</span></div>
 
           <div class="journey-step">
             <div class="num">4</div>
@@ -558,9 +621,7 @@
             </div>
           </div>
 
-          <div class="journey-arrow" aria-hidden="true">
-            <span><b>→</b> blindagem</span>
-          </div>
+          <div class="journey-arrow" aria-hidden="true"><span><b>→</b> blindagem</span></div>
 
           <div class="journey-step">
             <div class="num">5</div>
@@ -570,9 +631,7 @@
             </div>
           </div>
 
-          <div class="journey-arrow" aria-hidden="true">
-            <span><b>→</b> pilar</span>
-          </div>
+          <div class="journey-arrow" aria-hidden="true"><span><b>→</b> pilar</span></div>
 
           <div class="journey-step">
             <div class="num">6</div>
@@ -614,7 +673,6 @@
       </div>
 
       <div class="pricing-grid">
-        <!-- Plano 1 -->
         <div class="price-card" aria-label="Plano Essencial">
           <div>
             <div class="plan-title">Essencial</div>
@@ -637,8 +695,7 @@
           <div class="divider"></div>
 
           <p class="fineprint">
-            <b>Indicado para:</b> 1 CNPJ • até 10 notas/mês • sem funcionários.<br/>
-            Se você tem estrutura maior, veja a página detalhada (especialidade).
+            <b>Indicado para:</b> 1 CNPJ • até 30 notas/mês • sem funcionários.
           </p>
 
           <div class="plan-cta">
@@ -648,7 +705,6 @@
           </div>
         </div>
 
-        <!-- Plano 2 -->
         <div class="price-card featured" aria-label="Plano Pilar">
           <div class="ribbon">MAIS PROXIMIDADE</div>
           <div>
@@ -673,8 +729,7 @@
           <div class="divider"></div>
 
           <p class="fineprint">
-            <b>Ideal para:</b> quem quer mais proximidade e previsibilidade na rotina.<br/>
-            Para consultório com equipe/estrutura: proposta sob escopo (página detalhada).
+            <b>Ideal para:</b> quem quer mais proximidade e previsibilidade na rotina.
           </p>
 
           <div class="plan-cta">
@@ -745,11 +800,10 @@
       <div class="contact-card">
         <p style="margin-bottom:10px; font-weight:900;">Escolha seu canal:</p>
 
-        <!-- Ajuste com seus dados reais -->
         <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
           <a class="btn" href="mailto:contato@rumocontabilidade.com.br">Enviar e-mail</a>
           <a class="btn secondary"
-             href="https://wa.me/5500000000000?text=Ol%C3%A1%21%20Sou%20m%C3%A9dico%20ou%20dentista%20e%20quero%20entender%20qual%20plano%20da%20RUMO%20faz%20sentido%20para%20mim."
+             href="https://wa.me/5531999993189?text=Ol%C3%A1%21%20Sou%20m%C3%A9dico%20ou%20dentista%20e%20quero%20entender%20qual%20plano%20da%20RUMO%20faz%20sentido%20para%20mim."
              target="_blank" rel="noopener">Falar no WhatsApp</a>
         </div>
 
@@ -768,6 +822,7 @@
   </footer>
 
   <script>
+    // Pricing toggle
     (function(){
       const btnMensal = document.getElementById("btn-mensal");
       const btnSemestral = document.getElementById("btn-semestral");
@@ -778,12 +833,10 @@
         [btnMensal, btnSemestral, btnAnual].forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
       }
-
       function formatBRL(n){
         const value = Number(n);
         return value.toLocaleString("pt-BR", { style:"currency", currency:"BRL", maximumFractionDigits:0 });
       }
-
       function update(mode){
         prices.forEach(p => {
           const v = p.getAttribute("data-" + mode);
@@ -794,8 +847,34 @@
       btnMensal.addEventListener("click", () => { setActive(btnMensal); update("mensal"); });
       btnSemestral.addEventListener("click", () => { setActive(btnSemestral); update("semestral"); });
       btnAnual.addEventListener("click", () => { setActive(btnAnual); update("anual"); });
-
       update("mensal");
+    })();
+
+    // Mobile menu
+    (function(){
+      const burger = document.getElementById("burger");
+      const drawer = document.getElementById("mobileDrawer");
+      let open = false;
+
+      function setDrawer(state){
+        open = state;
+        drawer.style.display = open ? "block" : "none";
+        drawer.setAttribute("aria-hidden", open ? "false" : "true");
+        burger.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+        burger.textContent = open ? "✕" : "☰";
+      }
+
+      burger.addEventListener("click", () => setDrawer(!open));
+
+      // Close drawer when clicking a link
+      drawer.addEventListener("click", (e) => {
+        if (e.target && e.target.tagName === "A") setDrawer(false);
+      });
+
+      // Close drawer on resize back to desktop
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 980 && open) setDrawer(false);
+      });
     })();
   </script>
 </body>
