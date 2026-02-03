@@ -8,7 +8,7 @@ import QualifyForm from './components/QualifyForm';
 import Footer from './components/Footer';
 
 function App() {
-  const WHATSAPP_LINK = "https://wa.me/5531987654321?text=Olá,%20gostaria%20de%20falar%20com%20um%20consultor%20da%20RUMO.";
+  const WHATSAPP_LINK = "https://wa.me/5531999993189?text=Olá,%20gostaria%20de%20falar%20com%20um%20consultor%20da%20RUMO.";
 
   return (
     <div className="min-h-screen">
@@ -40,7 +40,7 @@ function App() {
             <div className="flex items-center justify-center gap-6">
               <div className="relative">
                 <img
-                  src={`${import.meta.env.BASE_URL}founder-joao-paulo.jpg`}
+                  src={`${import.meta.env.BASE_URL}images/founder-joao-paulo.jpg`}
                   className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-emerald-400 object-cover shadow-2xl"
                   alt="João Paulo - RUMO"
                 />
