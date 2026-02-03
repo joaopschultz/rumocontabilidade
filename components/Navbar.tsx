@@ -2,7 +2,7 @@
 import React from 'react';
 
 const Navbar: React.FC = () => {
-  const WHATSAPP_LINK = "https://wa.me/5531987654321?text=Olá,%20gostaria%20de%20falar%20com%20um%20consultor%20da%20RUMO.";
+  const WHATSAPP_LINK = "https://wa.me/5531999993189?text=Olá,%20gostaria%20de%20falar%20com%20um%20consultor%20da%20RUMO.";
 
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-slate-200 z-50">
