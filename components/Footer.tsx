@@ -42,11 +42,11 @@ const Footer: React.FC = () => {
             <ul className="space-y-4 text-white/60">
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-emerald-400" />
-                <span>contato@rumogestao.com</span>
+                <span>contato@contabilidaderumo.com.br</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-emerald-400" />
-                <span>+55 (31) 98765-4321</span>
+                <span>+55 (31) 99999-3189</span>
               </li>
               <li className="flex items-center gap-3">
                 <MapPin size={18} className="text-emerald-400" />
