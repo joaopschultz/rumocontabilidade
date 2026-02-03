@@ -39,14 +39,10 @@ function App() {
             </h2>
             <div className="flex items-center justify-center gap-6">
               <div className="relative">
-                <img 
-                  src="https://raw.githubusercontent.com/stackblitz/stackblitz-images/main/founder-rumo-real.jpg" 
-                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-emerald-400 object-cover shadow-2xl" 
-                  alt="João Paulo - RUMO" 
-                  onError={(e) => {
-                    // Fallback para uma imagem placeholder de alta qualidade caso a URL bruta falhe
-                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&h=200&auto=format&fit=crop";
-                  }}
+                <img
+                  src={`${import.meta.env.BASE_URL}founder-joao-paulo.jpg`}
+                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-emerald-400 object-cover shadow-2xl"
+                  alt="João Paulo - RUMO"
                 />
                 <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-indigo-900 flex items-center justify-center">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
