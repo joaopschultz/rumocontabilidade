@@ -8,7 +8,6 @@ function formatBRL(value: number) {
   }).format(value);
 }
 
-// Converte posição do slider (0-100) para valor real (escala não-linear)
 function sliderToValue(
   sliderPos: number,
   min: number,
@@ -25,7 +24,6 @@ function sliderToValue(
   }
 }
 
-// Converte valor real para posição do slider
 function valueToSlider(
   value: number,
   min: number,
@@ -54,7 +52,7 @@ type Props = {
 export default function SavingsSlider({
   min = 0,
   max = 200000,
-  defaultValue = 15000,
+  defaultValue = 25000,
   deltaPct = 0.215,
   inflectionPoint = 30000,
   inflectionSliderPos = 60,
@@ -69,18 +67,22 @@ export default function SavingsSlider({
     [sliderPos, min, max, inflectionPoint, inflectionSliderPos]
   );
 
-  const savings = useMemo(() => revenue * deltaPct, [revenue, deltaPct]);
+  // Correção: se a legenda é "por ano", multiplica por 12
+  const savingsAnnual = useMemo(() => revenue * deltaPct * 12, [revenue, deltaPct]);
 
   return (
     <div className="mt-6 w-full">
-      {/* Faturamento (input) */}
-      <div className="text-center text-sm text-slate-500">Seu faturamento mensal</div>
-      <div
-        className={`mt-1 text-center text-2xl font-semibold transition-all duration-200 ${
-          isDragging ? "text-indigo-600" : "text-slate-800"
-        }`}
-      >
-        {formatBRL(revenue)}
+      {/* Header */}
+      <div className="text-center">
+        <div className="text-sm text-slate-600">Seu faturamento mensal</div>
+
+        <div
+          className={`mt-1 text-2xl font-semibold transition-colors ${
+            isDragging ? "text-indigo-600" : "text-slate-900"
+          }`}
+        >
+          {formatBRL(revenue)}
+        </div>
       </div>
 
       {/* Slider */}
@@ -107,17 +109,19 @@ export default function SavingsSlider({
         />
       </div>
 
-      {/* Economia (resultado) - destacado */}
-      <div className="mt-4 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
-        <div className="text-center text-xs font-medium text-emerald-700">
-          Quanto você pode estar deixando na mesa
+      {/* Resultado (clean, sem caixa) */}
+      <div className="mt-5 flex items-baseline justify-between">
+        <div>
+          <div className="text-sm font-medium text-slate-700">Economia potencial</div>
+          <div className="text-xs text-slate-500">estimativa anual</div>
         </div>
+
         <div
-          className={`mt-1 text-center text-2xl font-bold transition-all duration-200 ${
+          className={`text-3xl font-bold text-emerald-600 transition-transform ${
             isDragging ? "scale-105" : ""
-          } text-emerald-600`}
+          }`}
         >
-          {formatBRL(savings)}
+          {formatBRL(savingsAnnual)}
         </div>
       </div>
     </div>
