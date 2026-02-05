@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ChevronRight, Stethoscope, TrendingUp, ShieldCheck } from 'lucide-react';
+import SavingsSlider from './SavingsSlider';
 
 const Hero: React.FC = () => {
   return (
@@ -70,6 +71,8 @@ const Hero: React.FC = () => {
                     <div className="h-full bg-emerald-500 w-[30%]"></div>
                   </div>
                 </div>
+
+                <SavingsSlider />
               </div>
               
               <div className="mt-8 pt-6 border-t border-slate-100 flex items-center justify-center gap-2">
