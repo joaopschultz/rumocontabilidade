@@ -65,7 +65,7 @@ const Hero: React.FC = () => {
                 <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-emerald-900">Pessoa Jurídica (Especialista)</span>
-                    <span className="text-emerald-600 font-bold">6% - 15,5%</span>
+                    <span className="text-emerald-600 font-bold">6% a 15,5%</span>
                   </div>
                   <div className="h-2 bg-emerald-200 rounded-full overflow-hidden">
                     <div className="h-full bg-emerald-500 w-[30%]"></div>
