@@ -1,3 +1,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* base */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+/* Slider premium (combina com o visual do site) */
+.rumo-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  outline: none;
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+.rumo-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #0f172a; /* slate-900 */
+  border: 3px solid #ffffff; /* aro branco */
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18);
+  cursor: pointer;
+}
+
+.rumo-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.04);
+}
+
+.rumo-slider:active::-webkit-slider-thumb {
+  transform: scale(0.98);
+}
+
+/* Firefox */
+.rumo-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #0f172a; /* slate-900 */
+  border: 3px solid #ffffff; /* aro branco */
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18);
+  cursor: pointer;
+}
+
+.rumo-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: transparent; /* track real vem do inline gradient */
+}
