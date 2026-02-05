@@ -67,26 +67,25 @@ export default function SavingsSlider({
     [sliderPos, min, max, inflectionPoint, inflectionSliderPos]
   );
 
-  // Correção: se a legenda é "por ano", multiplica por 12
-  const savingsAnnual = useMemo(() => revenue * deltaPct * 12, [revenue, deltaPct]);
+  const savings = useMemo(() => revenue * deltaPct, [revenue, deltaPct]);
 
   return (
-    <div className="mt-6 w-full">
-      {/* Header */}
+    <div className="mt-4 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5 shadow-sm">
+      {/* Faturamento + Slider */}
       <div className="text-center">
-        <div className="text-sm text-slate-600">Seu faturamento mensal</div>
-
+        <span className="text-xs uppercase tracking-wider text-slate-400 font-medium">
+          Seu faturamento mensal
+        </span>
         <div
-          className={`mt-1 text-2xl font-semibold transition-colors ${
-            isDragging ? "text-indigo-600" : "text-slate-900"
+          className={`text-2xl font-bold mt-1 transition-colors ${
+            isDragging ? "text-indigo-600" : "text-slate-800"
           }`}
         >
           {formatBRL(revenue)}
         </div>
       </div>
 
-      {/* Slider */}
-      <div className="mt-4 px-1">
+      <div className="mt-4">
         <input
           type="range"
           min={0}
@@ -109,21 +108,26 @@ export default function SavingsSlider({
         />
       </div>
 
-      {/* Resultado (clean, sem caixa) */}
-      <div className="mt-5 flex items-baseline justify-between">
-        <div>
-          <div className="text-sm font-medium text-slate-700">Economia potencial</div>
-          <div className="text-xs text-slate-500">estimativa anual</div>
-        </div>
+      {/* Divisor sutil */}
+      <div className="my-4 border-t border-dashed border-slate-200"></div>
 
+      {/* Resultado */}
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="text-xs uppercase tracking-wider text-emerald-600 font-medium">
+            Economia potencial
+          </div>
+          <div className="text-sm text-slate-500">por mês</div>
+        </div>
         <div
           className={`text-3xl font-bold text-emerald-600 transition-transform ${
-            isDragging ? "scale-105" : ""
+            isDragging ? "scale-110" : ""
           }`}
         >
-          {formatBRL(savingsAnnual)}
+          {formatBRL(savings)}
         </div>
       </div>
     </div>
   );
 }
+
