@@ -72,11 +72,9 @@ export default function SavingsSlider({
   const savings = useMemo(() => revenue * deltaPct, [revenue, deltaPct]);
 
   return (
-    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="mt-6 w-full">
       {/* Faturamento (input) */}
-      <div className="text-center text-sm text-slate-500">
-        Seu faturamento mensal
-      </div>
+      <div className="text-center text-sm text-slate-500">Seu faturamento mensal</div>
       <div
         className={`mt-1 text-center text-2xl font-semibold transition-all duration-200 ${
           isDragging ? "text-indigo-600" : "text-slate-800"
@@ -87,10 +85,6 @@ export default function SavingsSlider({
 
       {/* Slider */}
       <div className="mt-4 px-1">
-        <div className="flex justify-between text-xs text-slate-400 mb-2">
-          <span>{formatBRL(min)}</span>
-          <span>{formatBRL(max)}</span>
-        </div>
         <input
           type="range"
           min={0}
