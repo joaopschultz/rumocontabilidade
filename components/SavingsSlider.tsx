@@ -67,11 +67,11 @@ export default function SavingsSlider({
     [sliderPos, min, max, inflectionPoint, inflectionSliderPos]
   );
 
-  const savings = useMemo(() => revenue * deltaPct, [revenue, deltaPct]);
+  const savingsPerMonth = useMemo(() => revenue * deltaPct, [revenue, deltaPct]);
 
   return (
-    <div className="mt-4 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-5 shadow-sm">
-      {/* Faturamento + Slider */}
+    <div className="mt-6 pt-6">
+      {/* Faturamento */}
       <div className="text-center">
         <span className="text-xs uppercase tracking-wider text-slate-400 font-medium">
           Seu faturamento mensal
@@ -85,6 +85,7 @@ export default function SavingsSlider({
         </div>
       </div>
 
+      {/* Slider */}
       <div className="mt-4">
         <input
           type="range"
@@ -108,11 +109,8 @@ export default function SavingsSlider({
         />
       </div>
 
-      {/* Divisor sutil */}
-      <div className="my-4 border-t border-dashed border-slate-200"></div>
-
-      {/* Resultado */}
-      <div className="flex items-center justify-between">
+      {/* Resultado - economia por mês */}
+      <div className="mt-6 flex items-center justify-between">
         <div>
           <div className="text-xs uppercase tracking-wider text-emerald-600 font-medium">
             Economia potencial
@@ -124,10 +122,9 @@ export default function SavingsSlider({
             isDragging ? "scale-110" : ""
           }`}
         >
-          {formatBRL(savings)}
+          {formatBRL(savingsPerMonth)}
         </div>
       </div>
     </div>
   );
 }
-
