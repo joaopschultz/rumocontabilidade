@@ -1,7 +1,3 @@
-
-Savingsslider · TSX
-Copiar
-
 import React, { useMemo, useState } from "react";
 
 function formatBRL(value: number) {
@@ -77,64 +73,58 @@ export default function SavingsSlider({
 
   return (
     <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5">
-      <div className="text-center text-sm font-semibold text-slate-900">
-        Quanto você pode estar deixando na mesa
+      {/* Faturamento (input) */}
+      <div className="text-center text-sm text-slate-500">
+        Seu faturamento mensal
       </div>
-
       <div
-        className={`mt-3 text-center text-3xl font-semibold transition-all duration-200 ${
-          isDragging ? "scale-105 text-emerald-600" : "text-slate-900"
+        className={`mt-1 text-center text-2xl font-semibold transition-all duration-200 ${
+          isDragging ? "text-indigo-600" : "text-slate-800"
         }`}
       >
-        {formatBRL(savings)}
+        {formatBRL(revenue)}
       </div>
 
-      <div className="mt-5 px-1">
-        {/* Labels nas pontas */}
+      {/* Slider */}
+      <div className="mt-4 px-1">
         <div className="flex justify-between text-xs text-slate-400 mb-2">
           <span>{formatBRL(min)}</span>
           <span>{formatBRL(max)}</span>
         </div>
-
-        {/* Container do slider */}
-        <div className="relative">
-          {/* Tooltip flutuante */}
-          <div
-            className={`absolute -top-9 transform -translate-x-1/2 bg-indigo-950 text-white text-xs font-semibold px-2.5 py-1 rounded-lg transition-all duration-150 pointer-events-none z-10 ${
-              isDragging ? "opacity-100 scale-100" : "opacity-0 scale-90"
-            }`}
-            style={{ left: `${sliderPos}%` }}
-          >
-            {formatBRL(revenue)}
-            <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-indigo-950"></div>
-          </div>
-
-          <input
-            type="range"
-            min={0}
-            max={100}
-            step={0.5}
-            value={sliderPos}
-            onChange={(e) => setSliderPos(Number(e.target.value))}
-            onMouseDown={() => setIsDragging(true)}
-            onMouseUp={() => setIsDragging(false)}
-            onMouseLeave={() => setIsDragging(false)}
-            onTouchStart={() => setIsDragging(true)}
-            onTouchEnd={() => setIsDragging(false)}
-            className="rumo-slider w-full"
-            aria-label="Faturamento"
-            style={
-              {
-                background: `linear-gradient(to right, #10b981 0%, #10b981 ${sliderPos}%, #e2e8f0 ${sliderPos}%, #e2e8f0 100%)`,
-              } as React.CSSProperties
-            }
-          />
-        </div>
+        <input
+          type="range"
+          min={0}
+          max={100}
+          step={0.5}
+          value={sliderPos}
+          onChange={(e) => setSliderPos(Number(e.target.value))}
+          onMouseDown={() => setIsDragging(true)}
+          onMouseUp={() => setIsDragging(false)}
+          onMouseLeave={() => setIsDragging(false)}
+          onTouchStart={() => setIsDragging(true)}
+          onTouchEnd={() => setIsDragging(false)}
+          className="rumo-slider w-full"
+          aria-label="Faturamento"
+          style={
+            {
+              background: `linear-gradient(to right, #10b981 0%, #10b981 ${sliderPos}%, #e2e8f0 ${sliderPos}%, #e2e8f0 100%)`,
+            } as React.CSSProperties
+          }
+        />
       </div>
 
-      <div className="mt-2 text-center text-sm text-slate-600">
-        <span className="text-slate-500">Faturamento</span>{" "}
-        <span className="font-medium text-slate-700">{formatBRL(revenue)}</span>
+      {/* Economia (resultado) - destacado */}
+      <div className="mt-4 p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+        <div className="text-center text-xs font-medium text-emerald-700">
+          Quanto você pode estar deixando na mesa
+        </div>
+        <div
+          className={`mt-1 text-center text-2xl font-bold transition-all duration-200 ${
+            isDragging ? "scale-105" : ""
+          } text-emerald-600`}
+        >
+          {formatBRL(savings)}
+        </div>
       </div>
     </div>
   );
