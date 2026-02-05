@@ -28,21 +28,47 @@ export default function SavingsSlider({
   const savings = useMemo(() => revenue * deltaPct, [revenue, deltaPct]);
   const pct = useMemo(() => ((revenue - min) / (max - min)) * 100, [revenue, min, max]);
 
-  const mid = useMemo(() => Math.round(((min + max) / 2) / step) * step, [min, max, step]);
+  const presets = useMemo(() => {
+    const values = [20000, 50000, 100000, 200000].filter((v) => v >= min && v <= max);
+    // garante que bate no step
+    return values.map((v) => Math.round(v / step) * step);
+  }, [min, max, step]);
 
   return (
     <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
-      {/* Título */}
+      {/* título */}
       <div className="text-sm font-semibold text-slate-900">
         Quanto você pode estar deixando na mesa
       </div>
 
-      {/* Valor principal (economia) */}
-      <div className="mt-2 text-2xl font-semibold text-slate-900">
+      {/* valor principal centralizado */}
+      <div className="mt-3 text-center text-3xl font-semibold text-slate-900">
         {formatBRL(savings)}
       </div>
 
-      {/* Slider */}
+      {/* presets (opcional, mas melhora muito a UX) */}
+      <div className="mt-4 flex flex-wrap justify-center gap-2">
+        {presets.map((v) => {
+          const active = v === revenue;
+          return (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setRevenue(v)}
+              className={[
+                "rounded-full border px-3 py-1 text-xs transition",
+                active
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                  : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50",
+              ].join(" ")}
+            >
+              {formatBRL(v)}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* slider */}
       <div className="mt-4">
         <input
           type="range"
@@ -64,17 +90,10 @@ export default function SavingsSlider({
         />
       </div>
 
-      {/* Linha: Faturamento + valor */}
-      <div className="mt-2 flex items-baseline justify-between gap-3">
+      {/* linha mínima de contexto (sem poluir) */}
+      <div className="mt-2 flex items-baseline justify-between">
         <div className="text-xs text-slate-500">Faturamento</div>
         <div className="text-xs font-medium text-slate-700">{formatBRL(revenue)}</div>
-      </div>
-
-      {/* Marcadores discretos */}
-      <div className="mt-2 flex justify-between text-[11px] text-slate-400">
-        <span>{formatBRL(min)}</span>
-        <span>{formatBRL(mid)}</span>
-        <span>{formatBRL(max)}</span>
       </div>
     </div>
   );
