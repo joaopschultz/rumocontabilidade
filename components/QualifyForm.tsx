@@ -1,20 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { LeadData } from "../types";
+
+type UF = { id: number; sigla: string; nome: string };
+type City = { id: number; nome: string };
+
+const CAPITAIS: Record<string, string> = {
+  AC: "Rio Branco",
+  AL: "Maceió",
+  AP: "Macapá",
+  AM: "Manaus",
+  BA: "Salvador",
+  CE: "Fortaleza",
+  DF: "Brasília",
+  ES: "Vitória",
+  GO: "Goiânia",
+  MA: "São Luís",
+  MT: "Cuiabá",
+  MS: "Campo Grande",
+  MG: "Belo Horizonte",
+  PA: "Belém",
+  PB: "João Pessoa",
+  PR: "Curitiba",
+  PE: "Recife",
+  PI: "Teresina",
+  RJ: "Rio de Janeiro",
+  RN: "Natal",
+  RS: "Porto Alegre",
+  RO: "Porto Velho",
+  RR: "Boa Vista",
+  SC: "Florianópolis",
+  SP: "São Paulo",
+  SE: "Aracaju",
+  TO: "Palmas",
+};
 
 const QualifyForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  // Estado/Cidade (IBGE)
+  const [ufs, setUfs] = useState<UF[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
+  const [selectedUF, setSelectedUF] = useState<string>("");
+  const [selectedCity, setSelectedCity] = useState<string>("");
+  const [loadingCities, setLoadingCities] = useState(false);
 
   const [formData, setFormData] = useState<LeadData>({
     name: "",
     email: "",
     phone: "",
     profession: "médico",
-    city: "",
+    city: "", // vamos preencher como "Cidade - UF"
     currentRegime: "PF",
 
-    // mantidos apenas por compatibilidade com o tipo
+    // mantidos só por compatibilidade com o tipo
     estimatedRevenue: "",
     incomeSources: "",
     numCollaborators: "",
@@ -22,8 +62,62 @@ const QualifyForm: React.FC = () => {
     mainGoal: "acelerar uma conversa",
   });
 
+  // Carrega UFs
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(
+          "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
+        );
+        const data: UF[] = await res.json();
+        setUfs(data);
+      } catch (err) {
+        console.error("Erro ao carregar UFs (IBGE):", err);
+      }
+    })();
+  }, []);
+
+  // Carrega cidades quando seleciona UF
+  useEffect(() => {
+    if (!selectedUF) return;
+
+    (async () => {
+      try {
+        setLoadingCities(true);
+        setSelectedCity("");
+        setCities([]);
+
+        const res = await fetch(
+          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios?orderBy=nome`
+        );
+        const data: City[] = await res.json();
+
+        // Capital primeiro
+        const capital = CAPITAIS[selectedUF];
+        if (capital) {
+          const idx = data.findIndex((c) => c.nome === capital);
+          if (idx > -1) {
+            const [cap] = data.splice(idx, 1);
+            data.unshift(cap);
+          }
+        }
+
+        setCities(data);
+      } catch (err) {
+        console.error("Erro ao carregar cidades (IBGE):", err);
+      } finally {
+        setLoadingCities(false);
+      }
+    })();
+  }, [selectedUF]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // padroniza o campo city no formato "Cidade - UF"
+    const cityNormalized = `${selectedCity} - ${selectedUF}`;
+    setFormData((prev) => ({ ...prev, city: cityNormalized }));
+
     setLoading(true);
 
     // Simula envio para CRM / WhatsApp / e-mail
@@ -46,12 +140,16 @@ const QualifyForm: React.FC = () => {
           </h3>
 
           <p className="text-slate-600 leading-relaxed">
-            João entrará em contato em breve para entender seu momento e
-            acelerar sua tomada de decisão com segurança.
+            João entrará em contato em breve para agilizar sua reunião.
           </p>
 
           <button
-            onClick={() => setSubmitted(false)}
+            onClick={() => {
+              setSubmitted(false);
+              setSelectedUF("");
+              setSelectedCity("");
+              setCities([]);
+            }}
             className="mt-8 text-sm text-slate-500 hover:text-indigo-900 transition-colors"
           >
             Enviar outro contato
@@ -93,9 +191,7 @@ const QualifyForm: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-indigo-950">
-              E-mail
-            </label>
+            <label className="text-sm font-semibold text-indigo-950">E-mail</label>
             <input
               required
               type="email"
@@ -146,22 +242,48 @@ const QualifyForm: React.FC = () => {
             </select>
           </div>
 
+          {/* Estado */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-indigo-950">
-              Cidade
-            </label>
-            <input
+            <label className="text-sm font-semibold text-indigo-950">Estado</label>
+            <select
               required
-              type="text"
               className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
-              value={formData.city}
-              onChange={(e) =>
-                setFormData({ ...formData, city: e.target.value })
-              }
-            />
+              value={selectedUF}
+              onChange={(e) => setSelectedUF(e.target.value)}
+            >
+              <option value="" disabled>
+                Selecione...
+              </option>
+              {ufs.map((uf) => (
+                <option key={uf.id} value={uf.sigla}>
+                  {uf.nome} ({uf.sigla})
+                </option>
+              ))}
+            </select>
           </div>
 
+          {/* Cidade */}
           <div className="space-y-2">
+            <label className="text-sm font-semibold text-indigo-950">Cidade</label>
+            <select
+              required
+              disabled={!selectedUF || loadingCities}
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white disabled:opacity-60"
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}
+            >
+              <option value="" disabled>
+                {loadingCities ? "Carregando..." : "Selecione..."}
+              </option>
+              {cities.map((c) => (
+                <option key={c.id} value={c.nome}>
+                  {c.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="space-y-2 md:col-span-2">
             <label className="text-sm font-semibold text-indigo-950">
               Telefone / WhatsApp
             </label>
@@ -194,8 +316,7 @@ const QualifyForm: React.FC = () => {
             </button>
 
             <p className="text-center text-xs text-slate-400 mt-4">
-              Seus dados estão protegidos conforme nossa Política de Privacidade
-              e LGPD.
+              Seus dados estão protegidos conforme nossa Política de Privacidade e LGPD.
             </p>
           </div>
         </form>
