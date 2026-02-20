@@ -45,7 +45,10 @@ const QualifyForm: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [loadingCities, setLoadingCities] = useState(false);
 
-  const [error, setError] = useState<string>("");
+  const [fieldErrors, setFieldErrors] = useState({
+    email: "",
+    phone: "",
+  });
 
   const [formData, setFormData] = useState<LeadData>({
     name: "",
@@ -60,17 +63,14 @@ const QualifyForm: React.FC = () => {
     mainGoal: "acelerar uma conversa",
   });
 
+  // ---------------- IBGE ----------------
   useEffect(() => {
     (async () => {
-      try {
-        const res = await fetch(
-          "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-        );
-        const data: UF[] = await res.json();
-        setUfs(data);
-      } catch (err) {
-        console.error("Erro ao carregar UFs (IBGE):", err);
-      }
+      const res = await fetch(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
+      );
+      const data: UF[] = await res.json();
+      setUfs(data);
     })();
   }, []);
 
@@ -78,71 +78,86 @@ const QualifyForm: React.FC = () => {
     if (!selectedUF) return;
 
     (async () => {
-      try {
-        setLoadingCities(true);
-        setSelectedCity("");
-        setCities([]);
+      setLoadingCities(true);
+      setSelectedCity("");
+      setCities([]);
 
-        const res = await fetch(
-          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios?orderBy=nome`
-        );
-        const data: City[] = await res.json();
+      const res = await fetch(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios?orderBy=nome`
+      );
+      const data: City[] = await res.json();
 
-        const capital = CAPITAIS[selectedUF];
-        if (capital) {
-          const idx = data.findIndex((c) => c.nome === capital);
-          if (idx > -1) {
-            const [cap] = data.splice(idx, 1);
-            data.unshift(cap);
-          }
+      const capital = CAPITAIS[selectedUF];
+      if (capital) {
+        const idx = data.findIndex((c) => c.nome === capital);
+        if (idx > -1) {
+          const [cap] = data.splice(idx, 1);
+          data.unshift(cap);
         }
-
-        setCities(data);
-      } catch (err) {
-        console.error("Erro ao carregar cidades (IBGE):", err);
-      } finally {
-        setLoadingCities(false);
       }
+
+      setCities(data);
+      setLoadingCities(false);
     })();
   }, [selectedUF]);
 
-  const isValidEmail = (email: string) => {
-    // validação simples e sólida (sem exagero)
-    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+  // ---------------- VALIDAÇÕES ----------------
+
+  const validateEmail = (email: string) => {
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+    setFieldErrors((prev) => ({
+      ...prev,
+      email: isValid ? "" : "Informe um e-mail válido.",
+    }));
+    return isValid;
   };
 
-  const normalizePhoneDigits = (phone: string) => phone.replace(/\D/g, "");
-
-  const isValidPhoneBR = (phone: string) => {
-    const digits = normalizePhoneDigits(phone);
-    // 10 (fixo) ou 11 (celular) dígitos
-    return digits.length === 10 || digits.length === 11;
+  const validatePhone = (phone: string) => {
+    const digits = phone.replace(/\D/g, "");
+    const isValid = digits.length === 10 || digits.length === 11;
+    setFieldErrors((prev) => ({
+      ...prev,
+      phone: isValid ? "" : "Telefone deve ter DDD + número.",
+    }));
+    return isValid;
   };
+
+  // ---------------- MÁSCARA TELEFONE ----------------
+
+  const formatPhone = (value: string) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+
+    if (digits.length <= 2) return `(${digits}`;
+    if (digits.length <= 6)
+      return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    if (digits.length <= 10)
+      return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(
+        6
+      )}`;
+
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(
+      7,
+      11
+    )}`;
+  };
+
+  const handlePhoneChange = (value: string) => {
+    const formatted = formatPhone(value);
+    setFormData({ ...formData, phone: formatted });
+  };
+
+  // ---------------- SUBMIT ----------------
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
 
-    // validações
-    if (!isValidEmail(formData.email)) {
-      setError("Por favor, informe um e-mail válido.");
-      return;
-    }
-    if (!isValidPhoneBR(formData.phone)) {
-      setError("Por favor, informe um telefone válido (DDD + número).");
-      return;
-    }
+    const emailOk = validateEmail(formData.email);
+    const phoneOk = validatePhone(formData.phone);
+
+    if (!emailOk || !phoneOk) return;
 
     const cityNormalized = `${selectedCity} - ${selectedUF}`;
-
-    // se você quiser salvar o telefone normalizado (só dígitos), troque aqui:
-    // const phoneNormalized = normalizePhoneDigits(formData.phone);
-
-    setFormData((prev) => ({
-      ...prev,
-      city: cityNormalized,
-      // phone: phoneNormalized,
-    }));
+    setFormData((prev) => ({ ...prev, city: cityNormalized }));
 
     setLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1200));
@@ -152,51 +167,24 @@ const QualifyForm: React.FC = () => {
 
   if (submitted) {
     return (
-      <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-2xl border border-slate-100 max-w-2xl mx-auto">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
-            <CheckCircle2 size={32} />
-          </div>
-          <h3 className="text-2xl font-bold text-indigo-950 mb-3">
-            Obrigado! Sua solicitação foi enviada.
-          </h3>
-          <p className="text-slate-600 leading-relaxed">
-            João entrará em contato em breve para agilizar sua reunião.
-          </p>
-
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setSelectedUF("");
-              setSelectedCity("");
-              setCities([]);
-              setError("");
-              setFormData((p) => ({ ...p, name: "", email: "", phone: "" }));
-            }}
-            className="mt-8 text-sm text-slate-500 hover:text-indigo-900 transition-colors"
-          >
-            Enviar outro contato
-          </button>
-        </div>
+      <div className="bg-white p-8 md:p-12 rounded-[2rem] shadow-2xl border border-slate-100 max-w-2xl mx-auto text-center">
+        <CheckCircle2 size={48} className="text-emerald-600 mx-auto mb-4" />
+        <h3 className="text-2xl font-bold text-indigo-950 mb-3">
+          Obrigado! Sua solicitação foi enviada.
+        </h3>
+        <p className="text-slate-600">
+          João entrará em contato em breve.
+        </p>
       </div>
     );
   }
 
   return (
-    <section id="triagem" className="py-24 px-4 bg-white relative">
+    <section className="py-24 px-4 bg-white">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-indigo-950 mb-4">
-            Vamos conversar?
-          </h2>
-          <p className="text-slate-600">
-            Preencha os dados abaixo para agilizar sua reunião com o João.
-          </p>
-        </div>
-
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-8 md:p-12 rounded-[2rem] border border-slate-100 shadow-lg"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-8 md:p-12 rounded-[2rem] border shadow-lg"
         >
           {/* Nome */}
           <div className="space-y-2">
@@ -206,8 +194,7 @@ const QualifyForm: React.FC = () => {
             <input
               required
               type="text"
-              autoComplete="name"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-900/20 bg-white"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -223,74 +210,36 @@ const QualifyForm: React.FC = () => {
             <input
               required
               type="email"
-              inputMode="email"
-              autoComplete="email"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+              className={`w-full px-4 py-3 rounded-xl border ${
+                fieldErrors.email
+                  ? "border-rose-500 focus:ring-rose-500"
+                  : "border-slate-200 focus:ring-indigo-900/20"
+              } focus:ring-2 bg-white`}
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
+              onBlur={() => validateEmail(formData.email)}
             />
+            {fieldErrors.email && (
+              <p className="text-xs text-rose-600">{fieldErrors.email}</p>
+            )}
           </div>
 
-          {/* Profissão */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-indigo-950">
-              Profissão
-            </label>
-            <select
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
-              value={formData.profession}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  profession: e.target.value as any,
-                })
-              }
-            >
-              <option value="médico">Médico(a)</option>
-              <option value="dentista">Dentista</option>
-              <option value="outros">Outros profissionais da saúde</option>
-            </select>
-          </div>
-
-          {/* Atuação Atual */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-indigo-950">
-              Atuação Atual
-            </label>
-            <select
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
-              value={formData.currentRegime}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  currentRegime: e.target.value as any,
-                })
-              }
-            >
-              <option value="PF">Pessoa Física</option>
-              <option value="PJ">Pessoa Jurídica</option>
-            </select>
-          </div>
-
-          {/* Estado + Cidade (coluna esquerda) */}
-          <div className="space-y-2 md:col-start-1">
-            <div className="grid grid-cols-1 md:grid-cols-[110px_minmax(0,1fr)] gap-6 items-end">
-              {/* Estado */}
-              <div className="space-y-2">
+          {/* Estado + Cidade */}
+          <div className="md:col-start-1">
+            <div className="grid md:grid-cols-[110px_1fr] gap-6">
+              <div>
                 <label className="text-sm font-semibold text-indigo-950">
                   Estado
                 </label>
                 <select
                   required
-                  className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+                  className="w-full px-3 py-3 rounded-xl border border-slate-200 bg-white"
                   value={selectedUF}
                   onChange={(e) => setSelectedUF(e.target.value)}
                 >
-                  <option value="" disabled>
-                    UF
-                  </option>
+                  <option value="">UF</option>
                   {ufs.map((uf) => (
                     <option key={uf.id} value={uf.sigla}>
                       {uf.sigla}
@@ -299,21 +248,18 @@ const QualifyForm: React.FC = () => {
                 </select>
               </div>
 
-              {/* Cidade */}
-              <div className="space-y-2">
+              <div>
                 <label className="text-sm font-semibold text-indigo-950">
                   Cidade
                 </label>
                 <select
                   required
-                  disabled={!selectedUF || loadingCities}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white disabled:opacity-60"
+                  disabled={!selectedUF}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
                 >
-                  <option value="" disabled>
-                    {loadingCities ? "Carregando..." : "Selecione..."}
-                  </option>
+                  <option value="">Selecione...</option>
                   {cities.map((c) => (
                     <option key={c.id} value={c.nome}>
                       {c.nome}
@@ -324,53 +270,38 @@ const QualifyForm: React.FC = () => {
             </div>
           </div>
 
-          {/* Telefone (coluna direita) */}
-          <div className="space-y-2 md:col-start-2">
+          {/* Telefone */}
+          <div className="space-y-2">
             <label className="text-sm font-semibold text-indigo-950">
               Telefone / WhatsApp
             </label>
             <input
               required
               type="tel"
-              inputMode="tel"
-              autoComplete="tel"
-              placeholder="(31) 9..."
-              // aceita com ou sem máscara; valida 10 ou 11 dígitos no submit
-              pattern="[\d\s\(\)\-\+]{10,}"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+              placeholder="(31) 99999-9999"
+              className={`w-full px-4 py-3 rounded-xl border ${
+                fieldErrors.phone
+                  ? "border-rose-500 focus:ring-rose-500"
+                  : "border-slate-200 focus:ring-indigo-900/20"
+              } focus:ring-2 bg-white`}
               value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
+              onChange={(e) => handlePhoneChange(e.target.value)}
+              onBlur={() => validatePhone(formData.phone)}
             />
+            {fieldErrors.phone && (
+              <p className="text-xs text-rose-600">{fieldErrors.phone}</p>
+            )}
           </div>
 
-          {/* Erro */}
-          {error && (
-            <div className="md:col-span-2 rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-rose-700 text-sm">
-              {error}
-            </div>
-          )}
-
-          <div className="md:col-span-2 mt-2">
+          {/* Botão */}
+          <div className="md:col-span-2 mt-4">
             <button
               disabled={loading}
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-indigo-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-indigo-800 transition-all disabled:opacity-50"
+              className="w-full bg-indigo-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-indigo-800 transition"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="animate-spin" />
-                  Enviando...
-                </>
-              ) : (
-                <>Solicitar contato</>
-              )}
+              {loading ? "Enviando..." : "Solicitar contato"}
             </button>
-
-            <p className="text-center text-xs text-slate-400 mt-4">
-              Seus dados estão protegidos conforme nossa Política de Privacidade e LGPD.
-            </p>
           </div>
         </form>
       </div>
