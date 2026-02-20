@@ -39,39 +39,12 @@ function App() {
       <Navbar />
       <main>
         <Hero />
-
         <FeaturesSection />
-
-        {/* Quote/Vision Section */}
-        <section className="bg-indigo-900 py-24 text-center">
-          <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-12 leading-tight">
-              "Sua prioridade é o paciente. <br className="hidden md:block" /> A
-              nossa é a saúde da sua empresa."
-            </h2>
-            <div className="flex items-center justify-center gap-6">
-              <div className="relative">
-                <img
-                  src="images/founder-joao-paulo.jpg"
-                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-emerald-400 object-cover shadow-2xl"
-                  alt="João Paulo - RUMO"
-                />
-              </div>
-              <div className="text-left">
-                <p className="text-white font-bold text-xl">João Paulo</p>
-                <p className="text-indigo-100">
-                  Founder & Consultor Estratégico RUMO
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <ProcessSection />
 
-        {/* Comparação (Responsiva) */}
+        {/* Comparação */}
         <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-indigo-950">
                 Por que somos diferentes?
@@ -81,48 +54,45 @@ function App() {
               </p>
             </div>
 
-            {/* DESKTOP / TABLE */}
-            <div className="hidden md:block overflow-x-auto">
-              <table className="w-full text-left border-collapse rounded-2xl overflow-hidden border border-slate-100">
+            {/* DESKTOP */}
+            <div className="hidden md:block">
+              <table className="w-full border-collapse rounded-2xl overflow-hidden border border-slate-200">
                 <thead>
                   <tr>
-                    <th className="py-4 px-6 text-slate-600 font-semibold uppercase text-xs tracking-wider bg-slate-50">
+                    <th className="py-4 px-6 bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
                       Entregável
                     </th>
-
-                    {/* Tradicional: mais acinzentado */}
-                    <th className="py-4 px-6 text-slate-600 font-semibold uppercase text-xs tracking-wider bg-slate-100">
+                    <th className="py-4 px-6 bg-slate-50 text-slate-600 text-xs uppercase tracking-wider">
                       Contabilidade Tradicional
                     </th>
-
-                    {/* RUMO: azul mais sutil */}
-                    <th className="py-4 px-6 text-indigo-50 font-bold uppercase text-xs tracking-wider bg-indigo-800">
+                    <th className="py-4 px-6 bg-indigo-700 text-white text-xs uppercase tracking-wider">
                       RUMO Contabilidade
                     </th>
                   </tr>
                 </thead>
 
-                <tbody className="text-slate-700">
+                <tbody>
                   {COMPARACAO.map((row) => (
                     <tr
                       key={row.entregavel}
-                      className="border-t border-slate-100"
+                      className="border-t border-slate-200"
                     >
                       <td className="py-6 px-6 font-semibold text-indigo-950">
                         {row.entregavel}
                       </td>
 
-                      {/* Tradicional: bg cinza + X */}
-                      <td className="py-6 px-6 bg-slate-50 text-slate-500">
+                      <td className="py-6 px-6 text-slate-600">
                         <div className="flex items-start gap-2">
-                          <XCircle className="mt-0.5 text-rose-400" size={18} />
+                          <XCircle
+                            className="mt-0.5 text-slate-400"
+                            size={18}
+                          />
                           <span>{row.tradicional}</span>
                         </div>
                       </td>
 
-                      {/* RUMO: bg leve + check verde */}
-                      <td className="py-6 px-6 bg-indigo-50/60">
-                        <div className="flex items-start gap-2 text-indigo-950 font-semibold">
+                      <td className="py-6 px-6 text-indigo-950 font-semibold">
+                        <div className="flex items-start gap-2">
                           <CheckCircle2
                             className="mt-0.5 text-emerald-500"
                             size={18}
@@ -136,56 +106,51 @@ function App() {
               </table>
             </div>
 
-            {/* MOBILE / CARDS (títulos mais discretos) */}
+            {/* MOBILE */}
             <div className="md:hidden space-y-4">
               {COMPARACAO.map((row) => (
                 <div
                   key={row.entregavel}
-                  className="rounded-2xl border border-slate-100 bg-white shadow-sm"
+                  className="rounded-2xl border border-slate-200 bg-white shadow-sm p-5"
                 >
-                  {/* título discreto */}
-                  <div className="px-5 pt-5 pb-3">
-                    <p className="text-sm font-semibold text-indigo-950">
-                      {row.entregavel}
-                    </p>
+                  <p className="text-sm font-semibold text-indigo-950 mb-4">
+                    {row.entregavel}
+                  </p>
+
+                  {/* Tradicional */}
+                  <div className="flex items-start gap-3 mb-3">
+                    <XCircle
+                      className="mt-0.5 text-slate-400"
+                      size={18}
+                    />
+                    <div>
+                      <p className="text-xs uppercase text-slate-400 font-semibold">
+                        Tradicional
+                      </p>
+                      <p className="text-slate-600 text-sm">
+                        {row.tradicional}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="px-5 pb-5 space-y-3">
-                    {/* Tradicional */}
-                    <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3">
-                      <div className="mt-0.5">
-                        <XCircle className="text-rose-400" size={18} />
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                          Tradicional
-                        </p>
-                        <p className="text-slate-600">{row.tradicional}</p>
-                      </div>
-                    </div>
-
-                    {/* RUMO */}
-                    <div className="flex items-start gap-3 rounded-xl bg-indigo-50/60 p-3">
-                      <div className="mt-0.5">
-                        <CheckCircle2 className="text-emerald-500" size={18} />
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-indigo-700">
-                          RUMO
-                        </p>
-                        <p className="text-indigo-950 font-semibold">
-                          {row.rumo}
-                        </p>
-                      </div>
+                  {/* RUMO */}
+                  <div className="flex items-start gap-3 bg-indigo-50 rounded-xl p-3">
+                    <CheckCircle2
+                      className="mt-0.5 text-emerald-500"
+                      size={18}
+                    />
+                    <div>
+                      <p className="text-xs uppercase text-indigo-700 font-semibold">
+                        RUMO
+                      </p>
+                      <p className="text-indigo-950 font-semibold text-sm">
+                        {row.rumo}
+                      </p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-
-            <p className="text-center text-xs text-slate-400 mt-8">
-              *Comparação ilustrativa para destacar diferenciais de serviço.
-            </p>
           </div>
         </section>
 
@@ -193,18 +158,6 @@ function App() {
       </main>
 
       <Footer />
-
-      {/* Floating CTA for Mobile */}
-      <div className="md:hidden fixed bottom-6 right-6 left-6 z-40">
-        <a
-          href={WHATSAPP_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 bg-indigo-900 text-white py-4 rounded-2xl font-bold shadow-2xl"
-        >
-          Falar com um Consultor
-        </a>
-      </div>
     </div>
   );
 }
