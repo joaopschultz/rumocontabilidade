@@ -41,8 +41,8 @@ const QualifyForm: React.FC = () => {
 
   const [ufs, setUfs] = useState<UF[]>([]);
   const [cities, setCities] = useState<City[]>([]);
-  const [selectedUF, setSelectedUF] = useState<string>("");
-  const [selectedCity, setSelectedCity] = useState<string>("");
+  const [selectedUF, setSelectedUF] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
   const [loadingCities, setLoadingCities] = useState(false);
 
   const [formData, setFormData] = useState<LeadData>({
@@ -60,15 +60,11 @@ const QualifyForm: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      try {
-        const res = await fetch(
-          "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-        );
-        const data: UF[] = await res.json();
-        setUfs(data);
-      } catch (err) {
-        console.error("Erro ao carregar UFs (IBGE):", err);
-      }
+      const res = await fetch(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
+      );
+      const data: UF[] = await res.json();
+      setUfs(data);
     })();
   }, []);
 
@@ -76,31 +72,26 @@ const QualifyForm: React.FC = () => {
     if (!selectedUF) return;
 
     (async () => {
-      try {
-        setLoadingCities(true);
-        setSelectedCity("");
-        setCities([]);
+      setLoadingCities(true);
+      setSelectedCity("");
+      setCities([]);
 
-        const res = await fetch(
-          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios?orderBy=nome`
-        );
-        const data: City[] = await res.json();
+      const res = await fetch(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios?orderBy=nome`
+      );
+      const data: City[] = await res.json();
 
-        const capital = CAPITAIS[selectedUF];
-        if (capital) {
-          const idx = data.findIndex((c) => c.nome === capital);
-          if (idx > -1) {
-            const [cap] = data.splice(idx, 1);
-            data.unshift(cap);
-          }
+      const capital = CAPITAIS[selectedUF];
+      if (capital) {
+        const idx = data.findIndex((c) => c.nome === capital);
+        if (idx > -1) {
+          const [cap] = data.splice(idx, 1);
+          data.unshift(cap);
         }
-
-        setCities(data);
-      } catch (err) {
-        console.error("Erro ao carregar cidades (IBGE):", err);
-      } finally {
-        setLoadingCities(false);
       }
+
+      setCities(data);
+      setLoadingCities(false);
     })();
   }, [selectedUF]);
 
@@ -123,26 +114,12 @@ const QualifyForm: React.FC = () => {
           <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
             <CheckCircle2 size={32} />
           </div>
-
           <h3 className="text-2xl font-bold text-indigo-950 mb-3">
             Obrigado! Sua solicitação foi enviada.
           </h3>
-
-          <p className="text-slate-600 leading-relaxed">
+          <p className="text-slate-600">
             João entrará em contato em breve para agilizar sua reunião.
           </p>
-
-          <button
-            onClick={() => {
-              setSubmitted(false);
-              setSelectedUF("");
-              setSelectedCity("");
-              setCities([]);
-            }}
-            className="mt-8 text-sm text-slate-500 hover:text-indigo-900 transition-colors"
-          >
-            Enviar outro contato
-          </button>
         </div>
       </div>
     );
@@ -172,7 +149,7 @@ const QualifyForm: React.FC = () => {
             <input
               required
               type="text"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -188,7 +165,7 @@ const QualifyForm: React.FC = () => {
             <input
               required
               type="email"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
@@ -202,13 +179,10 @@ const QualifyForm: React.FC = () => {
               Profissão
             </label>
             <select
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
               value={formData.profession}
               onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  profession: e.target.value as any,
-                })
+                setFormData({ ...formData, profession: e.target.value as any })
               }
             >
               <option value="médico">Médico(a)</option>
@@ -217,13 +191,13 @@ const QualifyForm: React.FC = () => {
             </select>
           </div>
 
-          {/* Atuação */}
+          {/* Atuação Atual */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-indigo-950">
               Atuação Atual
             </label>
             <select
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
               value={formData.currentRegime}
               onChange={(e) =>
                 setFormData({
@@ -237,64 +211,69 @@ const QualifyForm: React.FC = () => {
             </select>
           </div>
 
-          {/* UF + Cidade + Telefone */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-[72px_minmax(0,1fr)_minmax(0,1fr)] gap-6 items-end">
-
-            {/* UF */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-indigo-950">UF</label>
-              <select
-                required
-                className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
-                value={selectedUF}
-                onChange={(e) => setSelectedUF(e.target.value)}
-              >
-                <option value="" disabled>UF</option>
-                {ufs.map((uf) => (
-                  <option key={uf.id} value={uf.sigla}>
-                    {uf.sigla}
+          {/* Estado + Cidade (coluna esquerda) */}
+          <div className="space-y-2 md:col-start-1">
+            <div className="grid grid-cols-1 md:grid-cols-[140px_minmax(0,1fr)] gap-6 items-end">
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-indigo-950">
+                  Estado
+                </label>
+                <select
+                  required
+                  className="w-full px-3 py-3 rounded-xl border border-slate-200 bg-white"
+                  value={selectedUF}
+                  onChange={(e) => setSelectedUF(e.target.value)}
+                >
+                  <option value="" disabled>
+                    UF
                   </option>
-                ))}
-              </select>
-            </div>
+                  {ufs.map((uf) => (
+                    <option key={uf.id} value={uf.sigla}>
+                      {uf.sigla}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            {/* Cidade */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-indigo-950">Cidade</label>
-              <select
-                required
-                disabled={!selectedUF || loadingCities}
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white disabled:opacity-60"
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-              >
-                <option value="" disabled>
-                  {loadingCities ? "Carregando..." : "Selecione..."}
-                </option>
-                {cities.map((c) => (
-                  <option key={c.id} value={c.nome}>
-                    {c.nome}
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-indigo-950">
+                  Cidade
+                </label>
+                <select
+                  required
+                  disabled={!selectedUF || loadingCities}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white disabled:opacity-60"
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                >
+                  <option value="" disabled>
+                    {loadingCities ? "Carregando..." : "Selecione..."}
                   </option>
-                ))}
-              </select>
+                  {cities.map((c) => (
+                    <option key={c.id} value={c.nome}>
+                      {c.nome}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
+          </div>
 
-            {/* Telefone */}
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-indigo-950">
-                Telefone / WhatsApp
-              </label>
-              <input
-                required
-                type="tel"
-                placeholder="(31) 9..."
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({ ...formData, phone: e.target.value })
-                }
-              />
-            </div>
+          {/* Telefone (coluna direita) */}
+          <div className="space-y-2 md:col-start-2">
+            <label className="text-sm font-semibold text-indigo-950">
+              Telefone / WhatsApp
+            </label>
+            <input
+              required
+              type="tel"
+              placeholder="(31) 9..."
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
+              value={formData.phone}
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value })
+              }
+            />
           </div>
 
           <div className="md:col-span-2 mt-4">
