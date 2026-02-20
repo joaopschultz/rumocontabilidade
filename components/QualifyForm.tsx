@@ -39,7 +39,6 @@ const QualifyForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Estado/Cidade (IBGE)
   const [ufs, setUfs] = useState<UF[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [selectedUF, setSelectedUF] = useState<string>("");
@@ -51,18 +50,14 @@ const QualifyForm: React.FC = () => {
     email: "",
     phone: "",
     profession: "médico",
-    city: "", // vamos preencher como "Cidade - UF"
+    city: "",
     currentRegime: "PF",
-
-    // mantidos só por compatibilidade com o tipo
     estimatedRevenue: "",
     incomeSources: "",
     numCollaborators: "",
-
     mainGoal: "acelerar uma conversa",
   });
 
-  // Carrega UFs
   useEffect(() => {
     (async () => {
       try {
@@ -77,7 +72,6 @@ const QualifyForm: React.FC = () => {
     })();
   }, []);
 
-  // Carrega cidades quando seleciona UF
   useEffect(() => {
     if (!selectedUF) return;
 
@@ -92,7 +86,6 @@ const QualifyForm: React.FC = () => {
         );
         const data: City[] = await res.json();
 
-        // Capital primeiro
         const capital = CAPITAIS[selectedUF];
         if (capital) {
           const idx = data.findIndex((c) => c.nome === capital);
@@ -114,15 +107,11 @@ const QualifyForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // padroniza o campo city no formato "Cidade - UF"
     const cityNormalized = `${selectedCity} - ${selectedUF}`;
     setFormData((prev) => ({ ...prev, city: cityNormalized }));
 
     setLoading(true);
-
-    // Simula envio para CRM / WhatsApp / e-mail
     await new Promise((resolve) => setTimeout(resolve, 1200));
-
     setLoading(false);
     setSubmitted(true);
   };
@@ -175,6 +164,7 @@ const QualifyForm: React.FC = () => {
           onSubmit={handleSubmit}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-8 md:p-12 rounded-[2rem] border border-slate-100 shadow-lg"
         >
+          {/* Nome */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-indigo-950">
               Nome Completo
@@ -190,8 +180,11 @@ const QualifyForm: React.FC = () => {
             />
           </div>
 
+          {/* Email */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-indigo-950">E-mail</label>
+            <label className="text-sm font-semibold text-indigo-950">
+              E-mail
+            </label>
             <input
               required
               type="email"
@@ -203,6 +196,7 @@ const QualifyForm: React.FC = () => {
             />
           </div>
 
+          {/* Profissão */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-indigo-950">
               Profissão
@@ -223,6 +217,7 @@ const QualifyForm: React.FC = () => {
             </select>
           </div>
 
+          {/* Atuação */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-indigo-950">
               Atuação Atual
@@ -242,61 +237,64 @@ const QualifyForm: React.FC = () => {
             </select>
           </div>
 
-          {/* Estado */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-indigo-950">Estado</label>
-            <select
-              required
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
-              value={selectedUF}
-              onChange={(e) => setSelectedUF(e.target.value)}
-            >
-              <option value="" disabled>
-                Selecione...
-              </option>
-              {ufs.map((uf) => (
-                <option key={uf.id} value={uf.sigla}>
-                  {uf.nome} ({uf.sigla})
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* UF + Cidade + Telefone */}
+          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-[72px_minmax(0,1fr)_minmax(0,1fr)] gap-6 items-end">
 
-          {/* Cidade */}
-          <div className="space-y-2">
-            <label className="text-sm font-semibold text-indigo-950">Cidade</label>
-            <select
-              required
-              disabled={!selectedUF || loadingCities}
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white disabled:opacity-60"
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-            >
-              <option value="" disabled>
-                {loadingCities ? "Carregando..." : "Selecione..."}
-              </option>
-              {cities.map((c) => (
-                <option key={c.id} value={c.nome}>
-                  {c.nome}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* UF */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-indigo-950">UF</label>
+              <select
+                required
+                className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+                value={selectedUF}
+                onChange={(e) => setSelectedUF(e.target.value)}
+              >
+                <option value="" disabled>UF</option>
+                {ufs.map((uf) => (
+                  <option key={uf.id} value={uf.sigla}>
+                    {uf.sigla}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div className="space-y-2 md:col-span-2">
-            <label className="text-sm font-semibold text-indigo-950">
-              Telefone / WhatsApp
-            </label>
-            <input
-              required
-              type="tel"
-              placeholder="(31) 9..."
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
-              value={formData.phone}
-              onChange={(e) =>
-                setFormData({ ...formData, phone: e.target.value })
-              }
-            />
+            {/* Cidade */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-indigo-950">Cidade</label>
+              <select
+                required
+                disabled={!selectedUF || loadingCities}
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white disabled:opacity-60"
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+              >
+                <option value="" disabled>
+                  {loadingCities ? "Carregando..." : "Selecione..."}
+                </option>
+                {cities.map((c) => (
+                  <option key={c.id} value={c.nome}>
+                    {c.nome}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Telefone */}
+            <div className="space-y-2">
+              <label className="text-sm font-semibold text-indigo-950">
+                Telefone / WhatsApp
+              </label>
+              <input
+                required
+                type="tel"
+                placeholder="(31) 9..."
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
+                value={formData.phone}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
+              />
+            </div>
           </div>
 
           <div className="md:col-span-2 mt-4">
