@@ -45,6 +45,8 @@ const QualifyForm: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [loadingCities, setLoadingCities] = useState(false);
 
+  const [error, setError] = useState<string>("");
+
   const [formData, setFormData] = useState<LeadData>({
     name: "",
     email: "",
@@ -60,11 +62,15 @@ const QualifyForm: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-      );
-      const data: UF[] = await res.json();
-      setUfs(data);
+      try {
+        const res = await fetch(
+          "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
+        );
+        const data: UF[] = await res.json();
+        setUfs(data);
+      } catch (err) {
+        console.error("Erro ao carregar UFs (IBGE):", err);
+      }
     })();
   }, []);
 
@@ -72,34 +78,71 @@ const QualifyForm: React.FC = () => {
     if (!selectedUF) return;
 
     (async () => {
-      setLoadingCities(true);
-      setSelectedCity("");
-      setCities([]);
+      try {
+        setLoadingCities(true);
+        setSelectedCity("");
+        setCities([]);
 
-      const res = await fetch(
-        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios?orderBy=nome`
-      );
-      const data: City[] = await res.json();
+        const res = await fetch(
+          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUF}/municipios?orderBy=nome`
+        );
+        const data: City[] = await res.json();
 
-      const capital = CAPITAIS[selectedUF];
-      if (capital) {
-        const idx = data.findIndex((c) => c.nome === capital);
-        if (idx > -1) {
-          const [cap] = data.splice(idx, 1);
-          data.unshift(cap);
+        const capital = CAPITAIS[selectedUF];
+        if (capital) {
+          const idx = data.findIndex((c) => c.nome === capital);
+          if (idx > -1) {
+            const [cap] = data.splice(idx, 1);
+            data.unshift(cap);
+          }
         }
-      }
 
-      setCities(data);
-      setLoadingCities(false);
+        setCities(data);
+      } catch (err) {
+        console.error("Erro ao carregar cidades (IBGE):", err);
+      } finally {
+        setLoadingCities(false);
+      }
     })();
   }, [selectedUF]);
 
+  const isValidEmail = (email: string) => {
+    // validação simples e sólida (sem exagero)
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+  };
+
+  const normalizePhoneDigits = (phone: string) => phone.replace(/\D/g, "");
+
+  const isValidPhoneBR = (phone: string) => {
+    const digits = normalizePhoneDigits(phone);
+    // 10 (fixo) ou 11 (celular) dígitos
+    return digits.length === 10 || digits.length === 11;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
+    // validações
+    if (!isValidEmail(formData.email)) {
+      setError("Por favor, informe um e-mail válido.");
+      return;
+    }
+    if (!isValidPhoneBR(formData.phone)) {
+      setError("Por favor, informe um telefone válido (DDD + número).");
+      return;
+    }
 
     const cityNormalized = `${selectedCity} - ${selectedUF}`;
-    setFormData((prev) => ({ ...prev, city: cityNormalized }));
+
+    // se você quiser salvar o telefone normalizado (só dígitos), troque aqui:
+    // const phoneNormalized = normalizePhoneDigits(formData.phone);
+
+    setFormData((prev) => ({
+      ...prev,
+      city: cityNormalized,
+      // phone: phoneNormalized,
+    }));
 
     setLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1200));
@@ -117,9 +160,23 @@ const QualifyForm: React.FC = () => {
           <h3 className="text-2xl font-bold text-indigo-950 mb-3">
             Obrigado! Sua solicitação foi enviada.
           </h3>
-          <p className="text-slate-600">
+          <p className="text-slate-600 leading-relaxed">
             João entrará em contato em breve para agilizar sua reunião.
           </p>
+
+          <button
+            onClick={() => {
+              setSubmitted(false);
+              setSelectedUF("");
+              setSelectedCity("");
+              setCities([]);
+              setError("");
+              setFormData((p) => ({ ...p, name: "", email: "", phone: "" }));
+            }}
+            className="mt-8 text-sm text-slate-500 hover:text-indigo-900 transition-colors"
+          >
+            Enviar outro contato
+          </button>
         </div>
       </div>
     );
@@ -149,7 +206,8 @@ const QualifyForm: React.FC = () => {
             <input
               required
               type="text"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
+              autoComplete="name"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
               value={formData.name}
               onChange={(e) =>
                 setFormData({ ...formData, name: e.target.value })
@@ -165,7 +223,9 @@ const QualifyForm: React.FC = () => {
             <input
               required
               type="email"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
+              inputMode="email"
+              autoComplete="email"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
               value={formData.email}
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
@@ -179,10 +239,13 @@ const QualifyForm: React.FC = () => {
               Profissão
             </label>
             <select
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
               value={formData.profession}
               onChange={(e) =>
-                setFormData({ ...formData, profession: e.target.value as any })
+                setFormData({
+                  ...formData,
+                  profession: e.target.value as any,
+                })
               }
             >
               <option value="médico">Médico(a)</option>
@@ -197,7 +260,7 @@ const QualifyForm: React.FC = () => {
               Atuação Atual
             </label>
             <select
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
               value={formData.currentRegime}
               onChange={(e) =>
                 setFormData({
@@ -213,14 +276,15 @@ const QualifyForm: React.FC = () => {
 
           {/* Estado + Cidade (coluna esquerda) */}
           <div className="space-y-2 md:col-start-1">
-            <div className="grid grid-cols-1 md:grid-cols-[140px_minmax(0,1fr)] gap-6 items-end">
+            <div className="grid grid-cols-1 md:grid-cols-[110px_minmax(0,1fr)] gap-6 items-end">
+              {/* Estado */}
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-indigo-950">
                   Estado
                 </label>
                 <select
                   required
-                  className="w-full px-3 py-3 rounded-xl border border-slate-200 bg-white"
+                  className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
                   value={selectedUF}
                   onChange={(e) => setSelectedUF(e.target.value)}
                 >
@@ -235,6 +299,7 @@ const QualifyForm: React.FC = () => {
                 </select>
               </div>
 
+              {/* Cidade */}
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-indigo-950">
                   Cidade
@@ -242,7 +307,7 @@ const QualifyForm: React.FC = () => {
                 <select
                   required
                   disabled={!selectedUF || loadingCities}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white disabled:opacity-60"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white disabled:opacity-60"
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
                 >
@@ -267,8 +332,12 @@ const QualifyForm: React.FC = () => {
             <input
               required
               type="tel"
+              inputMode="tel"
+              autoComplete="tel"
               placeholder="(31) 9..."
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white"
+              // aceita com ou sem máscara; valida 10 ou 11 dígitos no submit
+              pattern="[\d\s\(\)\-\+]{10,}"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-900/20 bg-white"
               value={formData.phone}
               onChange={(e) =>
                 setFormData({ ...formData, phone: e.target.value })
@@ -276,7 +345,14 @@ const QualifyForm: React.FC = () => {
             />
           </div>
 
-          <div className="md:col-span-2 mt-4">
+          {/* Erro */}
+          {error && (
+            <div className="md:col-span-2 rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-rose-700 text-sm">
+              {error}
+            </div>
+          )}
+
+          <div className="md:col-span-2 mt-2">
             <button
               disabled={loading}
               type="submit"
