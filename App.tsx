@@ -5,7 +5,7 @@ import FeaturesSection from "./components/FeaturesSection";
 import ProcessSection from "./components/ProcessSection";
 import QualifyForm from "./components/QualifyForm";
 import Footer from "./components/Footer";
-import { CheckCircle2, Minus } from "lucide-react";
+import { CheckCircle2, XCircle } from "lucide-react";
 
 function App() {
   const WHATSAPP_LINK =
@@ -40,19 +40,6 @@ function App() {
       <main>
         <Hero />
 
-        {/* Trust Bar - Hidden temporarily as requested */}
-        {/*
-        <div className="bg-slate-50 py-12 border-y border-slate-100 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-40 grayscale">
-            <div className="font-bold text-xl">MEDCLOUD</div>
-            <div className="font-bold text-xl">DENTALEASE</div>
-            <div className="font-bold text-xl">HEALTHPARTNER</div>
-            <div className="font-bold text-xl">SIMPLESNACIONAL</div>
-            <div className="font-bold text-xl">LGPDSYSTEM</div>
-          </div>
-        </div>
-        */}
-
         <FeaturesSection />
 
         {/* Quote/Vision Section */}
@@ -82,7 +69,7 @@ function App() {
 
         <ProcessSection />
 
-        {/* Benefits Table (Responsive) */}
+        {/* Comparação (Responsiva) */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
@@ -102,10 +89,14 @@ function App() {
                     <th className="py-4 px-6 text-slate-600 font-semibold uppercase text-xs tracking-wider bg-slate-50">
                       Entregável
                     </th>
-                    <th className="py-4 px-6 text-slate-600 font-semibold uppercase text-xs tracking-wider bg-slate-50">
+
+                    {/* Tradicional: mais acinzentado */}
+                    <th className="py-4 px-6 text-slate-600 font-semibold uppercase text-xs tracking-wider bg-slate-100">
                       Contabilidade Tradicional
                     </th>
-                    <th className="py-4 px-6 text-white font-bold uppercase text-xs tracking-wider bg-indigo-900">
+
+                    {/* RUMO: azul mais sutil */}
+                    <th className="py-4 px-6 text-indigo-50 font-bold uppercase text-xs tracking-wider bg-indigo-800">
                       RUMO Contabilidade
                     </th>
                   </tr>
@@ -113,21 +104,29 @@ function App() {
 
                 <tbody className="text-slate-700">
                   {COMPARACAO.map((row) => (
-                    <tr key={row.entregavel} className="border-t border-slate-100">
+                    <tr
+                      key={row.entregavel}
+                      className="border-t border-slate-100"
+                    >
                       <td className="py-6 px-6 font-semibold text-indigo-950">
                         {row.entregavel}
                       </td>
 
-                      <td className="py-6 px-6 text-slate-500">
+                      {/* Tradicional: bg cinza + X */}
+                      <td className="py-6 px-6 bg-slate-50 text-slate-500">
                         <div className="flex items-start gap-2">
-                          <Minus className="mt-0.5 text-slate-300" size={18} />
+                          <XCircle className="mt-0.5 text-rose-400" size={18} />
                           <span>{row.tradicional}</span>
                         </div>
                       </td>
 
+                      {/* RUMO: bg leve + check verde */}
                       <td className="py-6 px-6 bg-indigo-50/60">
                         <div className="flex items-start gap-2 text-indigo-950 font-semibold">
-                          <CheckCircle2 className="mt-0.5 text-emerald-500" size={18} />
+                          <CheckCircle2
+                            className="mt-0.5 text-emerald-500"
+                            size={18}
+                          />
                           <span>{row.rumo}</span>
                         </div>
                       </td>
@@ -137,39 +136,46 @@ function App() {
               </table>
             </div>
 
-            {/* MOBILE / CARDS */}
+            {/* MOBILE / CARDS (títulos mais discretos) */}
             <div className="md:hidden space-y-4">
               {COMPARACAO.map((row) => (
                 <div
                   key={row.entregavel}
-                  className="rounded-2xl border border-slate-100 overflow-hidden shadow-sm"
+                  className="rounded-2xl border border-slate-100 bg-white shadow-sm"
                 >
-                  <div className="bg-indigo-900 text-white px-5 py-4">
-                    <p className="font-bold">{row.entregavel}</p>
+                  {/* título discreto */}
+                  <div className="px-5 pt-5 pb-3">
+                    <p className="text-sm font-semibold text-indigo-950">
+                      {row.entregavel}
+                    </p>
                   </div>
 
-                  <div className="bg-white px-5 py-4 space-y-3">
-                    <div className="flex items-start gap-3">
+                  <div className="px-5 pb-5 space-y-3">
+                    {/* Tradicional */}
+                    <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-3">
                       <div className="mt-0.5">
-                        <Minus className="text-slate-300" size={18} />
+                        <XCircle className="text-rose-400" size={18} />
                       </div>
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                           Tradicional
                         </p>
                         <p className="text-slate-600">{row.tradicional}</p>
                       </div>
                     </div>
 
+                    {/* RUMO */}
                     <div className="flex items-start gap-3 rounded-xl bg-indigo-50/60 p-3">
                       <div className="mt-0.5">
                         <CheckCircle2 className="text-emerald-500" size={18} />
                       </div>
                       <div>
-                        <p className="text-xs font-semibold uppercase tracking-wider text-indigo-700">
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-indigo-700">
                           RUMO
                         </p>
-                        <p className="text-indigo-950 font-semibold">{row.rumo}</p>
+                        <p className="text-indigo-950 font-semibold">
+                          {row.rumo}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -177,7 +183,6 @@ function App() {
               ))}
             </div>
 
-            {/* small note (optional - remove if you don't want) */}
             <p className="text-center text-xs text-slate-400 mt-8">
               *Comparação ilustrativa para destacar diferenciais de serviço.
             </p>
